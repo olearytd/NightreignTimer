@@ -7,11 +7,11 @@ struct GameTimerPhase {
 
 let dayPhases = [
     GameTimerPhase(name: "Free Explore", duration: 270),   // 4:30
-    GameTimerPhase(name: "First Shrink", duration: 180),   // 3:00
-    GameTimerPhase(name: "Second Shrink", duration: 390)   // 6:30
-//    GameTimerPhase(name: "Free Explore", duration: 2),   // for quick testing
-//    GameTimerPhase(name: "First Shrink", duration: 2),   // for quick testing
-//    GameTimerPhase(name: "Second Shrink", duration: 2)   // for quick testing
+    GameTimerPhase(name: "First Circle", duration: 180),   // 3:00
+    GameTimerPhase(name: "Last Circle", duration: 390)   // 6:30
+//    GameTimerPhase(name: "Free Explore", duration: 5),   // test
+//    GameTimerPhase(name: "First Circle", duration: 5),   // test
+//    GameTimerPhase(name: "Last Circle", duration: 5)   // test
 ]
 
 struct ContentView: View {
@@ -22,6 +22,8 @@ struct ContentView: View {
     @State private var day = 1
     @State private var wasPaused = false
     @State private var hasAnswered = false
+    @State private var backgroundDate: Date? = nil
+    @Environment(\.scenePhase) var scenePhase
     @AppStorage("winCount") private var winCount = 0
     @AppStorage("totalAttempts") private var totalAttempts = 0
 
@@ -158,14 +160,31 @@ struct ContentView: View {
                 stopTimer()
                 timeRemaining = dayPhases[currentPhaseIndex].duration
             }
+            .onChange(of: scenePhase) {
+                switch scenePhase {
+                case .background:
+                    if isRunning {
+                        backgroundDate = Date()
+                    }
+                case .active:
+                    if let backgroundDate = backgroundDate, isRunning {
+                        let elapsed = Date().timeIntervalSince(backgroundDate)
+                        timeRemaining = max(0, timeRemaining - elapsed)
+                    }
+                    backgroundDate = nil
+                default:
+                    break
+                }
+            }
         }
     }
 
     func startTimer() {
-        isRunning = true
         if timeRemaining <= 0 {
             timeRemaining = dayPhases[currentPhaseIndex].duration
         }
+        isRunning = true
+
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             if timeRemaining > 0 {
                 timeRemaining -= 1
@@ -174,7 +193,7 @@ struct ContentView: View {
             }
         }
     }
-
+    
     func advanceToNextPhaseOrPause() {
         if currentPhaseIndex + 1 < dayPhases.count {
             currentPhaseIndex += 1
