@@ -1,0 +1,580 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		D828D7262E0B0F1600CCBD67 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D828D70C2E0B0F1400CCBD67 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D828D7132E0B0F1400CCBD67;
+			remoteInfo = NightreignTimer;
+		};
+		D828D7302E0B0F1600CCBD67 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D828D70C2E0B0F1400CCBD67 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D828D7132E0B0F1400CCBD67;
+			remoteInfo = NightreignTimer;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D828D7142E0B0F1400CCBD67 /* NightreignTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NightreignTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D828D7252E0B0F1600CCBD67 /* NightreignTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NightreignTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D828D72F2E0B0F1600CCBD67 /* NightreignTimerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NightreignTimerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		D828D7372E0B0F1600CCBD67 /* Exceptions for "NightreignTimer" folder in "NightreignTimer" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = D828D7132E0B0F1400CCBD67 /* NightreignTimer */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		D828D7162E0B0F1400CCBD67 /* NightreignTimer */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D828D7372E0B0F1600CCBD67 /* Exceptions for "NightreignTimer" folder in "NightreignTimer" target */,
+			);
+			path = NightreignTimer;
+			sourceTree = "<group>";
+		};
+		D828D7282E0B0F1600CCBD67 /* NightreignTimerTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = NightreignTimerTests;
+			sourceTree = "<group>";
+		};
+		D828D7322E0B0F1600CCBD67 /* NightreignTimerUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = NightreignTimerUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D828D7112E0B0F1400CCBD67 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D828D7222E0B0F1600CCBD67 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D828D72C2E0B0F1600CCBD67 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D828D70B2E0B0F1400CCBD67 = {
+			isa = PBXGroup;
+			children = (
+				D828D7162E0B0F1400CCBD67 /* NightreignTimer */,
+				D828D7282E0B0F1600CCBD67 /* NightreignTimerTests */,
+				D828D7322E0B0F1600CCBD67 /* NightreignTimerUITests */,
+				D828D7152E0B0F1400CCBD67 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D828D7152E0B0F1400CCBD67 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D828D7142E0B0F1400CCBD67 /* NightreignTimer.app */,
+				D828D7252E0B0F1600CCBD67 /* NightreignTimerTests.xctest */,
+				D828D72F2E0B0F1600CCBD67 /* NightreignTimerUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D828D7132E0B0F1400CCBD67 /* NightreignTimer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D828D7382E0B0F1600CCBD67 /* Build configuration list for PBXNativeTarget "NightreignTimer" */;
+			buildPhases = (
+				D828D7102E0B0F1400CCBD67 /* Sources */,
+				D828D7112E0B0F1400CCBD67 /* Frameworks */,
+				D828D7122E0B0F1400CCBD67 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				D828D7162E0B0F1400CCBD67 /* NightreignTimer */,
+			);
+			name = NightreignTimer;
+			packageProductDependencies = (
+			);
+			productName = NightreignTimer;
+			productReference = D828D7142E0B0F1400CCBD67 /* NightreignTimer.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D828D7242E0B0F1600CCBD67 /* NightreignTimerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D828D73D2E0B0F1600CCBD67 /* Build configuration list for PBXNativeTarget "NightreignTimerTests" */;
+			buildPhases = (
+				D828D7212E0B0F1600CCBD67 /* Sources */,
+				D828D7222E0B0F1600CCBD67 /* Frameworks */,
+				D828D7232E0B0F1600CCBD67 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D828D7272E0B0F1600CCBD67 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				D828D7282E0B0F1600CCBD67 /* NightreignTimerTests */,
+			);
+			name = NightreignTimerTests;
+			packageProductDependencies = (
+			);
+			productName = NightreignTimerTests;
+			productReference = D828D7252E0B0F1600CCBD67 /* NightreignTimerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D828D72E2E0B0F1600CCBD67 /* NightreignTimerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D828D7402E0B0F1600CCBD67 /* Build configuration list for PBXNativeTarget "NightreignTimerUITests" */;
+			buildPhases = (
+				D828D72B2E0B0F1600CCBD67 /* Sources */,
+				D828D72C2E0B0F1600CCBD67 /* Frameworks */,
+				D828D72D2E0B0F1600CCBD67 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D828D7312E0B0F1600CCBD67 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				D828D7322E0B0F1600CCBD67 /* NightreignTimerUITests */,
+			);
+			name = NightreignTimerUITests;
+			packageProductDependencies = (
+			);
+			productName = NightreignTimerUITests;
+			productReference = D828D72F2E0B0F1600CCBD67 /* NightreignTimerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D828D70C2E0B0F1400CCBD67 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1630;
+				LastUpgradeCheck = 1630;
+				TargetAttributes = {
+					D828D7132E0B0F1400CCBD67 = {
+						CreatedOnToolsVersion = 16.3;
+					};
+					D828D7242E0B0F1600CCBD67 = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = D828D7132E0B0F1400CCBD67;
+					};
+					D828D72E2E0B0F1600CCBD67 = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = D828D7132E0B0F1400CCBD67;
+					};
+				};
+			};
+			buildConfigurationList = D828D70F2E0B0F1400CCBD67 /* Build configuration list for PBXProject "NightreignTimer" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D828D70B2E0B0F1400CCBD67;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = D828D7152E0B0F1400CCBD67 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D828D7132E0B0F1400CCBD67 /* NightreignTimer */,
+				D828D7242E0B0F1600CCBD67 /* NightreignTimerTests */,
+				D828D72E2E0B0F1600CCBD67 /* NightreignTimerUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D828D7122E0B0F1400CCBD67 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D828D7232E0B0F1600CCBD67 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D828D72D2E0B0F1600CCBD67 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D828D7102E0B0F1400CCBD67 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D828D7212E0B0F1600CCBD67 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D828D72B2E0B0F1600CCBD67 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D828D7272E0B0F1600CCBD67 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D828D7132E0B0F1400CCBD67 /* NightreignTimer */;
+			targetProxy = D828D7262E0B0F1600CCBD67 /* PBXContainerItemProxy */;
+		};
+		D828D7312E0B0F1600CCBD67 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D828D7132E0B0F1400CCBD67 /* NightreignTimer */;
+			targetProxy = D828D7302E0B0F1600CCBD67 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		D828D7392E0B0F1600CCBD67 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NightreignTimer/NightreignTimer.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LCM5FMVWQD;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NightreignTimer/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = toleary.NightreignTimer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D828D73A2E0B0F1600CCBD67 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NightreignTimer/NightreignTimer.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LCM5FMVWQD;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NightreignTimer/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = toleary.NightreignTimer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D828D73B2E0B0F1600CCBD67 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = LCM5FMVWQD;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D828D73C2E0B0F1600CCBD67 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = LCM5FMVWQD;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D828D73E2E0B0F1600CCBD67 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LCM5FMVWQD;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = toleary.NightreignTimerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NightreignTimer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NightreignTimer";
+			};
+			name = Debug;
+		};
+		D828D73F2E0B0F1600CCBD67 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LCM5FMVWQD;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = toleary.NightreignTimerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NightreignTimer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NightreignTimer";
+			};
+			name = Release;
+		};
+		D828D7412E0B0F1600CCBD67 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LCM5FMVWQD;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = toleary.NightreignTimerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = NightreignTimer;
+			};
+			name = Debug;
+		};
+		D828D7422E0B0F1600CCBD67 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LCM5FMVWQD;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = toleary.NightreignTimerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = NightreignTimer;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D828D70F2E0B0F1400CCBD67 /* Build configuration list for PBXProject "NightreignTimer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D828D73B2E0B0F1600CCBD67 /* Debug */,
+				D828D73C2E0B0F1600CCBD67 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D828D7382E0B0F1600CCBD67 /* Build configuration list for PBXNativeTarget "NightreignTimer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D828D7392E0B0F1600CCBD67 /* Debug */,
+				D828D73A2E0B0F1600CCBD67 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D828D73D2E0B0F1600CCBD67 /* Build configuration list for PBXNativeTarget "NightreignTimerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D828D73E2E0B0F1600CCBD67 /* Debug */,
+				D828D73F2E0B0F1600CCBD67 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D828D7402E0B0F1600CCBD67 /* Build configuration list for PBXNativeTarget "NightreignTimerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D828D7412E0B0F1600CCBD67 /* Debug */,
+				D828D7422E0B0F1600CCBD67 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D828D70C2E0B0F1400CCBD67 /* Project object */;
+}
