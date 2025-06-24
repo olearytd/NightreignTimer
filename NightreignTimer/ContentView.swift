@@ -9,6 +9,9 @@ let dayPhases = [
     GameTimerPhase(name: "Free Explore", duration: 270),   // 4:30
     GameTimerPhase(name: "First Shrink", duration: 180),   // 3:00
     GameTimerPhase(name: "Second Shrink", duration: 390)   // 6:30
+//    GameTimerPhase(name: "Free Explore", duration: 2),   // for quick testing
+//    GameTimerPhase(name: "First Shrink", duration: 2),   // for quick testing
+//    GameTimerPhase(name: "Second Shrink", duration: 2)   // for quick testing
 ]
 
 struct ContentView: View {
