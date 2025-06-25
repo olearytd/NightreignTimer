@@ -35,8 +35,8 @@ struct ContentView: View {
         ZStack {
             LinearGradient(
                 gradient: Gradient(colors: [
-                    Color(red: 54/255, green: 44/255, blue: 30/255), // warm deep bronze
-                    Color(red: 20/255, green: 20/255, blue: 20/255)  // soft black
+                    Color(red: 35/255, green: 20/255, blue: 50/255), // deep purple
+                    Color(red: 10/255, green: 10/255, blue: 30/255)  // dark blue
                 ]),
                 startPoint: .top,
                 endPoint: .bottom
@@ -47,13 +47,27 @@ struct ContentView: View {
                     Text("Elden Ring: Nightreign")
                         .font(.largeTitle)
                         .fontWeight(.semibold)
-                        .foregroundStyle(Color("EldenGold"))
-                        .shadow(color: .black.opacity(0.8), radius: 2, x: 0, y: 1)
+                        .foregroundStyle(Color("EldenBlue"))
+                        .shadow(color: .black.opacity(0.9), radius: 4, x: 0, y: 4)
+                        .overlay(
+                            Text("Elden Ring: Nightreign")
+                                .font(.largeTitle)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.white.opacity(0.2))
+                                .offset(x: 1, y: 1)
+                        )
                     Text("Timer")
                         .font(.largeTitle)
                         .fontWeight(.medium)
-                        .foregroundStyle(Color("EldenGold"))
-                        .shadow(color: .black.opacity(0.8), radius: 2, x: 0, y: 1)
+                        .foregroundStyle(Color("EldenBlue"))
+                        .shadow(color: .black.opacity(0.9), radius: 4, x: 0, y: 4)
+                        .overlay(
+                            Text("Timer")
+                                .font(.largeTitle)
+                                .fontWeight(.medium)
+                                .foregroundColor(.white.opacity(0.2))
+                                .offset(x: 1, y: 1)
+                        )
                 }
                 .multilineTextAlignment(.center)
                 .padding(.top)
