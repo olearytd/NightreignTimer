@@ -1,4 +1,5 @@
 import SwiftUI
+import ActivityKit
 
 struct GameTimerPhase {
     let name: String
@@ -6,12 +7,14 @@ struct GameTimerPhase {
 }
 
 let dayPhases = [
-    GameTimerPhase(name: "Free Explore", duration: 270),   // 4:30
-    GameTimerPhase(name: "First Circle", duration: 180),   // 3:00
-    GameTimerPhase(name: "Last Circle", duration: 390)   // 6:30
-//    GameTimerPhase(name: "Free Explore", duration: 5),   // test
-//    GameTimerPhase(name: "First Circle", duration: 5),   // test
-//    GameTimerPhase(name: "Last Circle", duration: 5)   // test
+    GameTimerPhase(name: "Explore", duration: 270),   // 4:30
+    GameTimerPhase(name: "First Circle Closing", duration: 180),   // 3:00
+    GameTimerPhase(name: "Explore", duration: 210),   // 3:30
+    GameTimerPhase(name: "Last Circle Closing", duration: 180)   // 3:00
+//    GameTimerPhase(name: "Explore", duration: 5),   // test
+//    GameTimerPhase(name: "Circle Closing", duration: 5),   // test
+//    GameTimerPhase(name: "Explore", duration: 5),   // test
+//    GameTimerPhase(name: "Circle Closing", duration: 5)   // test
 ]
 
 struct ContentView: View {
@@ -26,33 +29,53 @@ struct ContentView: View {
     @Environment(\.scenePhase) var scenePhase
     @AppStorage("winCount") private var winCount = 0
     @AppStorage("totalAttempts") private var totalAttempts = 0
+    @State private var liveActivity: Activity<NightreignWidgetAttributes>?
 
     var body: some View {
         ZStack {
-            Color(.systemBackground)
-                .ignoresSafeArea()
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    Color(red: 54/255, green: 44/255, blue: 30/255), // warm deep bronze
+                    Color(red: 20/255, green: 20/255, blue: 20/255)  // soft black
+                ]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
             VStack(spacing: 30) {
-                Image("NightreignLogo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 80)
-                    .padding(.top)
+                VStack(spacing: 4) {
+                    Text("Elden Ring: Nightreign")
+                        .font(.largeTitle)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(Color("EldenGold"))
+                        .shadow(color: .black.opacity(0.8), radius: 2, x: 0, y: 1)
+                    Text("Timer")
+                        .font(.largeTitle)
+                        .fontWeight(.medium)
+                        .foregroundStyle(Color("EldenGold"))
+                        .shadow(color: .black.opacity(0.8), radius: 2, x: 0, y: 1)
+                }
+                .multilineTextAlignment(.center)
+                .padding(.top)
                 if day < 3 {
                     VStack(spacing: 30) {
                         Text("Day \(day) – Phase \(currentPhaseIndex + 1) of \(dayPhases.count)")
                             .font(.title)
+                            .foregroundColor(.white)
                             .padding(.top)
                         
                         ProgressView(value: progressForCurrentPhase())
-                            .progressViewStyle(LinearProgressViewStyle())
+                            .progressViewStyle(LinearProgressViewStyle(tint: .white))
                             .padding(.horizontal)
                             .animation(.easeInOut(duration: 0.3), value: timeRemaining)
                         
                         Text(timeString(from: timeRemaining))
                             .font(.system(size: 48, weight: .bold, design: .monospaced))
+                            .foregroundColor(.white)
 
                         Text("Phase: \(currentPhaseName())")
                             .font(.title2)
+                            .foregroundColor(.white)
                             .padding()
                             .transition(.opacity)
                             .animation(.easeInOut, value: currentPhaseIndex)
@@ -183,11 +206,43 @@ struct ContentView: View {
         if timeRemaining <= 0 {
             timeRemaining = dayPhases[currentPhaseIndex].duration
         }
+
+        if ActivityAuthorizationInfo().areActivitiesEnabled {
+            let attributes = NightreignWidgetAttributes(name: "Nightreign")
+            let contentState = NightreignWidgetAttributes.ContentState(
+                timeRemaining: Int(timeRemaining),
+                phaseLabel: currentPhaseName()
+            )
+            let content = ActivityContent(state: contentState, staleDate: Date().addingTimeInterval(timeRemaining))
+            do {
+                liveActivity = try Activity.request(attributes: attributes, content: content)
+            } catch {
+                print("Failed to start live activity: \(error)")
+            }
+        }
+
         isRunning = true
 
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            guard isRunning else { return }
             if timeRemaining > 0 {
                 timeRemaining -= 1
+
+                let sharedDefaults = UserDefaults(suiteName: "group.com.toleary.NightreignTimer")
+                sharedDefaults?.set(currentPhaseName(), forKey: "currentPhaseName")
+                sharedDefaults?.set(Int(timeRemaining), forKey: "timeRemaining")
+
+                Task {
+                    await liveActivity?.update(
+                        ActivityContent(
+                            state: NightreignWidgetAttributes.ContentState(
+                                timeRemaining: Int(timeRemaining),
+                                phaseLabel: currentPhaseName()
+                            ),
+                            staleDate: Date().addingTimeInterval(timeRemaining)
+                        )
+                    )
+                }
             } else {
                 advanceToNextPhaseOrPause()
             }
@@ -200,6 +255,19 @@ struct ContentView: View {
             timeRemaining = dayPhases[currentPhaseIndex].duration
         } else {
             stopTimer()
+            Task {
+                await liveActivity?.end(
+                    ActivityContent(
+                        state: NightreignWidgetAttributes.ContentState(
+                            timeRemaining: 0,
+                            phaseLabel: "Done"
+                        ),
+                        staleDate: nil
+                    ),
+                    dismissalPolicy: .immediate
+                )
+                liveActivity = nil
+            }
             timeRemaining = 0
         }
     }
@@ -255,6 +323,19 @@ struct ContentView: View {
         isRunning = false
         wasPaused = false
         hasAnswered = false
+        Task {
+            await liveActivity?.end(
+                ActivityContent(
+                    state: NightreignWidgetAttributes.ContentState(
+                        timeRemaining: 0,
+                        phaseLabel: "Reset"
+                    ),
+                    staleDate: nil
+                ),
+                dismissalPolicy: .immediate
+            )
+            liveActivity = nil
+        }
     }
 }
 
