@@ -11,10 +11,10 @@ let dayPhases = [
     GameTimerPhase(name: "First Circle Closing", duration: 180),   // 3:00
     GameTimerPhase(name: "Explore", duration: 210),   // 3:30
     GameTimerPhase(name: "Last Circle Closing", duration: 180)   // 3:00
-//    GameTimerPhase(name: "Explore", duration: 5),   // test
-//    GameTimerPhase(name: "Circle Closing", duration: 5),   // test
-//    GameTimerPhase(name: "Explore", duration: 5),   // test
-//    GameTimerPhase(name: "Circle Closing", duration: 5)   // test
+//    GameTimerPhase(name: "Explore", duration: 2),   // test
+//    GameTimerPhase(name: "Circle Closing", duration: 2),   // test
+//    GameTimerPhase(name: "Explore", duration: 2),   // test
+//    GameTimerPhase(name: "Circle Closing", duration: 2)   // test
 ]
 
 struct ContentView: View {
@@ -119,6 +119,7 @@ struct ContentView: View {
                             wasPaused = false
                         }
                         .padding(.top)
+                        .foregroundColor(.white)
                         .buttonStyle(.bordered)
                         .scaleEffect(isRunning ? 1.0 : 1.05)
                         .animation(.easeInOut(duration: 0.2), value: isRunning)
@@ -130,8 +131,10 @@ struct ContentView: View {
                         Text("Nightlord Battle")
                             .font(.largeTitle)
                             .bold()
+                            .foregroundColor(.white)
                         Text("Did you win?")
                             .font(.title2)
+                            .foregroundColor(.white)
 
                         HStack(spacing: 20) {
                             Button("Yes") {
@@ -151,16 +154,19 @@ struct ContentView: View {
                         }
 
                         Text("Wins: \(winCount)")
-                            .font(.headline)
+                            .font(.title3)
                             .padding(.top)
+                            .foregroundColor(.white)
 
                         Text("Attempts: \(totalAttempts)")
-                            .font(.subheadline)
+                            .font(.headline)
+                            .foregroundColor(.white)
 
                         if totalAttempts > 0 {
                             let winRate = Double(winCount) / Double(totalAttempts) * 100
                             Text(String(format: "Win Rate: %.1f%%", winRate))
-                                .font(.subheadline)
+                                .font(.headline)
+                                .foregroundColor(.white)
                         }
 
                         Button("Reset Stats") {
@@ -168,6 +174,7 @@ struct ContentView: View {
                             totalAttempts = 0
                         }
                         .buttonStyle(.bordered)
+                        .foregroundColor(.white)
                         .padding(.top)
 
                         Button("Restart") {
