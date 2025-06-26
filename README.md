@@ -2,7 +2,7 @@
 
 # ER Nightreign Timer
 
-**ER Nightreign Timer** is a lightweight iOS companion app that helps players track and manage the in-game day/night cycle, specifically tailored to anticipate and react to **Nightreign** phase changes in the Shadow of the Erdtree DLC.
+**ER Nightreign Timer** is a lightweight iOS companion app that helps players track and manage the in-game day/night cycle, specifically tailored to anticipate and react to **Nightreign** Day/Night cycle changes in the Elden Ring: Nightreign.
 
 ## 🕰️ Features
 
