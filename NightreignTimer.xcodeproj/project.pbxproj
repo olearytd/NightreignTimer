@@ -58,6 +58,7 @@
 		D8DA86D02E0B4E11000442A4 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		D8DA86D22E0B4E11000442A4 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		D8DA86F12E0B7B15000442A4 /* NightreignWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NightreignWidgetExtension.entitlements; sourceTree = "<group>"; };
+		D8F1EA1E2E0D9C41000EC8C6 /* NightreignTimer.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = NightreignTimer.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -152,6 +153,7 @@
 		D828D70B2E0B0F1400CCBD67 = {
 			isa = PBXGroup;
 			children = (
+				D8F1EA1E2E0D9C41000EC8C6 /* NightreignTimer.xctestplan */,
 				D8DA86F12E0B7B15000442A4 /* NightreignWidgetExtension.entitlements */,
 				D828D7162E0B0F1400CCBD67 /* NightreignTimer */,
 				D828D7282E0B0F1600CCBD67 /* NightreignTimerTests */,

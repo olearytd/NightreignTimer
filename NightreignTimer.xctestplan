@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "3259F45F-566F-4D6B-8E7F-025182333A0C",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:NightreignTimer.xcodeproj",
+      "identifier" : "D828D7132E0B0F1400CCBD67",
+      "name" : "NightreignTimer"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:NightreignTimer.xcodeproj",
+        "identifier" : "D828D7242E0B0F1600CCBD67",
+        "name" : "NightreignTimerTests"
+      }
+    }
+  ],
+  "version" : 1
+}
