@@ -44,13 +44,13 @@ struct ContentView: View {
             .ignoresSafeArea()
             VStack(spacing: 30) {
                 VStack(spacing: 4) {
-                    Text("Elden Ring: Nightreign")
+                    Text("ER Nightreign")
                         .font(.largeTitle)
                         .fontWeight(.semibold)
                         .foregroundStyle(Color("EldenBlue"))
                         .shadow(color: .black.opacity(0.9), radius: 4, x: 0, y: 4)
                         .overlay(
-                            Text("Elden Ring: Nightreign")
+                            Text("ER Nightreign")
                                 .font(.largeTitle)
                                 .fontWeight(.semibold)
                                 .foregroundColor(.white.opacity(0.2))
