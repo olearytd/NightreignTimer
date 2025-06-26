@@ -19,13 +19,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # ⬇️ THIS STEP IS NOW FIXED ⬇️
       - name: Select latest available iPhone simulator
         id: set_simulator
         run: |
-          # Select the latest available iPhone simulator
-          SIMULATOR_DEVICE=$(xcrun simctl list devices available | grep "iPhone" | tail -1 | sed -e 's/.*(\(.*\)).*/\1/')
-          echo "device_id=$SIMULATOR_DEVICE" >> "$GITHUB_OUTPUT"
-          echo "Selected simulator ID: $SIMULATOR_DEVICE"
+          # Find the UUID of the last available iPhone simulator
+          # This command is more robust and correctly extracts the UUID
+          SIMULATOR_UUID=$(xcrun simctl list devices available | grep "iPhone" | tail -1 | grep -oE '[A-F0-9]{8}-([A-F0-9]{4}-){3}[A-F0-9]{12}')
+          echo "device_id=$SIMULATOR_UUID" >> "$GITHUB_OUTPUT"
+          echo "Selected simulator ID: $SIMULATOR_UUID"
 
       - name: Build
         run: |
