@@ -42,7 +42,7 @@ struct ContentView: View {
                 endPoint: .bottom
             )
             .ignoresSafeArea()
-            VStack(spacing: 30) {
+            VStack {
                 VStack(spacing: 4) {
                     Text("ER Nightreign")
                         .font(.largeTitle)
@@ -70,12 +70,15 @@ struct ContentView: View {
                         )
                 }
                 .multilineTextAlignment(.center)
-                .padding(.top)
+                .padding(.top, 40)
+                Spacer()
                 if day < 3 {
                     VStack(spacing: 30) {
-                        Text("Day \(day) – Phase \(currentPhaseIndex + 1) of \(dayPhases.count)")
-                            .font(.title)
+                        Text("Day \(dayName()): \n\(currentPhaseName())")
+                            .font(.largeTitle)
                             .foregroundColor(.white)
+                            .multilineTextAlignment(.center)
+                            .frame(maxWidth: .infinity)
                             .padding(.top)
                         
                         ProgressView(value: progressForCurrentPhase())
@@ -87,15 +90,9 @@ struct ContentView: View {
                             .font(.system(size: 48, weight: .bold, design: .monospaced))
                             .foregroundColor(.white)
 
-                        Text("Phase: \(currentPhaseName())")
-                            .font(.title2)
-                            .foregroundColor(.white)
-                            .padding()
-                            .transition(.opacity)
-                            .animation(.easeInOut, value: currentPhaseIndex)
 
                         if !isRunning && timeRemaining == 0 && currentPhaseIndex == dayPhases.count - 1 && day < 3 {
-                            Button("Start Day \(day + 1)") {
+                            Button("Start Day \(dayName(for: day + 1))") {
                                 day += 1
                                 currentPhaseIndex = 0
                                 timeRemaining = dayPhases[0].duration
@@ -105,6 +102,8 @@ struct ContentView: View {
                                 }
                             }
                             .buttonStyle(.borderedProminent)
+                            .controlSize(.large)
+                            .font(.title2)
                             .scaleEffect(1.05)
                             .animation(.easeInOut(duration: 0.2), value: isRunning)
                         } else {
@@ -119,6 +118,8 @@ struct ContentView: View {
                                     }
                                 }
                                 .buttonStyle(.borderedProminent)
+                                .controlSize(.large)
+                                .font(.title2)
                                 .scaleEffect(isRunning ? 1.0 : 1.05)
                                 .animation(.easeInOut(duration: 0.2), value: isRunning)
                             }
@@ -133,6 +134,8 @@ struct ContentView: View {
                             wasPaused = false
                         }
                         .padding(.top)
+                        .controlSize(.large)
+                        .font(.title2)
                         .foregroundColor(.white)
                         .buttonStyle(.bordered)
                         .scaleEffect(isRunning ? 1.0 : 1.05)
@@ -158,6 +161,8 @@ struct ContentView: View {
                                 hasAnswered = true
                             }
                             .buttonStyle(.borderedProminent)
+                            .controlSize(.large)
+                            .font(.title2)
 
                             Button("No") {
                                 guard !hasAnswered else { return }
@@ -165,6 +170,8 @@ struct ContentView: View {
                                 hasAnswered = true
                             }
                             .buttonStyle(.bordered)
+                            .controlSize(.large)
+                            .font(.title2)
                         }
 
                         Text("Wins: \(winCount)")
@@ -173,13 +180,13 @@ struct ContentView: View {
                             .foregroundColor(.white)
 
                         Text("Attempts: \(totalAttempts)")
-                            .font(.headline)
+                            .font(.title3)
                             .foregroundColor(.white)
 
                         if totalAttempts > 0 {
                             let winRate = Double(winCount) / Double(totalAttempts) * 100
                             Text(String(format: "Win Rate: %.1f%%", winRate))
-                                .font(.headline)
+                                .font(.title3)
                                 .foregroundColor(.white)
                         }
 
@@ -188,6 +195,7 @@ struct ContentView: View {
                             totalAttempts = 0
                         }
                         .buttonStyle(.bordered)
+                        .controlSize(.large)
                         .foregroundColor(.white)
                         .padding(.top)
 
@@ -195,9 +203,11 @@ struct ContentView: View {
                             restartGame()
                         }
                         .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
                         .padding(.top)
                     }
                 }
+                Spacer()
             }
             .padding()
             .onAppear {
@@ -309,6 +319,24 @@ struct ContentView: View {
         }
         return dayPhases[currentPhaseIndex].name
     }
+    
+    func dayName() -> String {
+        switch day {
+        case 1: return "One"
+        case 2: return "Two"
+        case 3: return "Three"
+        default: return "\(day)"
+        }
+    }
+    
+    func dayName(for index: Int) -> String {
+        switch index {
+        case 1: return "One"
+        case 2: return "Two"
+        case 3: return "Three"
+        default: return "\(index)"
+        }
+    }
 
     func totalDayDuration() -> TimeInterval {
         dayPhases.map { $0.duration }.reduce(0, +)
@@ -328,11 +356,11 @@ struct ContentView: View {
     
     func buttonLabel() -> String {
         if isRunning {
-            return "Stop"
+            return "Pause"
         } else if wasPaused {
             return "Resume"
         } else {
-            return "Start Day \(day)"
+            return "Start Day \(dayName())"
         }
     }
 
