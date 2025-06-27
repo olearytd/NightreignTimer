@@ -18,7 +18,7 @@
 
 Available on the Apple App Store.
 
-TestFlight beta invites may be available [here](https://github.com/toleary/NightreignTimer) if you're interested in early access.
+TestFlight beta invites may be available [here](https://github.com/olearytd/NightreignTimer) if you're interested in early access.
 
 ---
 
@@ -29,7 +29,7 @@ This is an iOS SwiftUI project built with Xcode. Contributions are welcome.
 Clone the repo:
 
 ```bash
-git clone https://github.com/toleary/NightreignTimer.git
+git clone https://github.com/olearytd/NightreignTimer.git
 ```
 
 Open `NightreignTimer.xcodeproj` in Xcode and build/run on a physical device for best results (Live Activity requires a real device).
@@ -42,7 +42,7 @@ Please open an issue using our [issue template](./ISSUES-TEMPLATE.md) as a guide
 
 ### To submit an issue:
 
-1. Go to the [Issues tab](https://github.com/toleary/NightreignTimer/issues).
+1. Go to the [Issues tab](https://github.com/olearytd/NightreignTimer/issues).
 2. Click **"New Issue"**.
 3. Copy the relevant sections from [`ISSUES-TEMPLATE.md`](./ISSUES-TEMPLATE.md).
 4. Paste them into the new issue description.
