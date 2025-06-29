@@ -26,6 +26,7 @@ struct ContentView: View {
     @State private var wasPaused = false
     @State private var hasAnswered = false
     @State private var backgroundDate: Date? = nil
+    @State private var tooltipText: String = "Start the timer when you see \"Day One\" on screen."
     @Environment(\.scenePhase) var scenePhase
     @AppStorage("winCount") private var winCount = 0
     @AppStorage("totalAttempts") private var totalAttempts = 0
@@ -92,11 +93,12 @@ struct ContentView: View {
 
 
                         if !isRunning && timeRemaining == 0 && currentPhaseIndex == dayPhases.count - 1 && day < 3 {
-                            Button("Start Day \(dayName(for: day + 1))") {
+                            Button(day + 1 == 3 ? "Fight the Nightlord" : "Start Day \(dayName(for: day + 1))") {
                                 day += 1
                                 currentPhaseIndex = 0
                                 timeRemaining = dayPhases[0].duration
                                 wasPaused = false
+                                tooltipText = "Start the timer when you see \"Day \(dayName())\" on screen."
                                 if day == 2 {
                                     startTimer()
                                 }
@@ -126,6 +128,7 @@ struct ContentView: View {
                         }
 
                         Button("Reset") {
+                            tooltipText = "Start the timer when you see \"Day One\" on screen."
                             stopTimer()
                             day = 1
                             currentPhaseIndex = 0
@@ -140,6 +143,13 @@ struct ContentView: View {
                         .buttonStyle(.bordered)
                         .scaleEffect(isRunning ? 1.0 : 1.05)
                         .animation(.easeInOut(duration: 0.2), value: isRunning)
+                    
+                    Text(tooltipText)
+                        .font(.body)
+                        .foregroundColor(.white.opacity(0.7))
+                        .multilineTextAlignment(.center)
+                        .padding(.top, 10)
+                        .padding(.horizontal)
                     }
                 }
 
@@ -300,6 +310,11 @@ struct ContentView: View {
                 liveActivity = nil
             }
             timeRemaining = 0
+            if day + 1 == 3 {
+                tooltipText = ""
+            } else {
+                tooltipText = "Start the timer when you see \"Day \(dayName(for: day + 1))\" on screen."
+            }
         }
     }
 
@@ -372,6 +387,7 @@ struct ContentView: View {
         isRunning = false
         wasPaused = false
         hasAnswered = false
+        tooltipText = "Start the timer when you see \"Day One\" on screen."
         Task {
             await liveActivity?.end(
                 ActivityContent(
