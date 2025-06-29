@@ -1,5 +1,6 @@
 import SwiftUI
 import ActivityKit
+import UIKit
 
 struct GameTimerPhase {
     let name: String
@@ -11,10 +12,10 @@ let dayPhases = [
     GameTimerPhase(name: "First Circle Closing", duration: 180),   // 3:00
     GameTimerPhase(name: "Explore", duration: 210),   // 3:30
     GameTimerPhase(name: "Last Circle Closing", duration: 180)   // 3:00
-//    GameTimerPhase(name: "Explore", duration: 2),   // test
-//    GameTimerPhase(name: "Circle Closing", duration: 2),   // test
-//    GameTimerPhase(name: "Explore", duration: 2),   // test
-//    GameTimerPhase(name: "Circle Closing", duration: 2)   // test
+//    GameTimerPhase(name: "Explore", duration: 31),   // test
+//    GameTimerPhase(name: "Circle Closing", duration: 31),   // test
+//    GameTimerPhase(name: "Explore", duration: 31),   // test
+//    GameTimerPhase(name: "Circle Closing", duration: 31)   // test
 ]
 
 struct ContentView: View {
@@ -26,6 +27,7 @@ struct ContentView: View {
     @State private var wasPaused = false
     @State private var hasAnswered = false
     @State private var backgroundDate: Date? = nil
+    @State private var showPhaseWarning = false
     @State private var tooltipText: String = "Start the timer when you see \"Day One\" on screen."
     @Environment(\.scenePhase) var scenePhase
     @AppStorage("winCount") private var winCount = 0
@@ -83,13 +85,24 @@ struct ContentView: View {
                             .padding(.top)
                         
                         ProgressView(value: progressForCurrentPhase())
-                            .progressViewStyle(LinearProgressViewStyle(tint: .white))
+                            .progressViewStyle(LinearProgressViewStyle(tint: showPhaseWarning ? .yellow : .white))
                             .padding(.horizontal)
                             .animation(.easeInOut(duration: 0.3), value: timeRemaining)
                         
                         Text(timeString(from: timeRemaining))
                             .font(.system(size: 48, weight: .bold, design: .monospaced))
                             .foregroundColor(.white)
+                        
+                        if showPhaseWarning {
+                            Text(
+                                currentPhaseName().contains("Circle") ? "Move to the Safe Zone!" :
+                                currentPhaseName().contains("Explore") ? "The Night Rain Approaches!" :
+                                "Phase ending soon"
+                            )
+                                .font(.title2)
+                                .foregroundColor(.yellow)
+                                .transition(.opacity)
+                        }
 
 
                         if !isRunning && timeRemaining == 0 && currentPhaseIndex == dayPhases.count - 1 && day < 3 {
@@ -135,6 +148,7 @@ struct ContentView: View {
                             timeRemaining = dayPhases[0].duration
                             isRunning = false
                             wasPaused = false
+                            showPhaseWarning = false
                         }
                         .padding(.top)
                         .controlSize(.large)
@@ -263,11 +277,17 @@ struct ContentView: View {
         }
 
         isRunning = true
-
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             guard isRunning else { return }
             if timeRemaining > 0 {
                 timeRemaining -= 1
+                if timeRemaining == 30 {
+                    triggerHaptic()
+                    showPhaseWarning = true
+                }
+                if timeRemaining == 0 {
+                    showPhaseWarning = false
+                }
 
                 let sharedDefaults = UserDefaults(suiteName: "group.com.toleary.NightreignTimer")
                 sharedDefaults?.set(currentPhaseName(), forKey: "currentPhaseName")
@@ -386,6 +406,7 @@ struct ContentView: View {
         timeRemaining = dayPhases[0].duration
         isRunning = false
         wasPaused = false
+        showPhaseWarning = false
         hasAnswered = false
         tooltipText = "Start the timer when you see \"Day One\" on screen."
         Task {
@@ -400,6 +421,18 @@ struct ContentView: View {
                 dismissalPolicy: .immediate
             )
             liveActivity = nil
+        }
+    }
+
+    func triggerHaptic() {
+        let notificationGenerator = UINotificationFeedbackGenerator()
+        notificationGenerator.notificationOccurred(.error)
+
+        let impactGenerator = UIImpactFeedbackGenerator(style: .heavy)
+        impactGenerator.impactOccurred()
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            impactGenerator.impactOccurred()
         }
     }
 }
