@@ -7,14 +7,14 @@ struct GameTimerPhase {
 }
 
 let dayPhases = [
-//    GameTimerPhase(name: "Explore", duration: 270),   // 4:30
-//    GameTimerPhase(name: "First Circle Closing", duration: 180),   // 3:00
-//    GameTimerPhase(name: "Explore", duration: 210),   // 3:30
-//    GameTimerPhase(name: "Last Circle Closing", duration: 180)   // 3:00
-    GameTimerPhase(name: "Explore", duration: 2),   // test
-    GameTimerPhase(name: "Circle Closing", duration: 2),   // test
-    GameTimerPhase(name: "Explore", duration: 2),   // test
-    GameTimerPhase(name: "Circle Closing", duration: 2)   // test
+    GameTimerPhase(name: "Explore", duration: 270),   // 4:30
+    GameTimerPhase(name: "First Circle Closing", duration: 180),   // 3:00
+    GameTimerPhase(name: "Explore", duration: 210),   // 3:30
+    GameTimerPhase(name: "Last Circle Closing", duration: 180)   // 3:00
+//    GameTimerPhase(name: "Explore", duration: 2),   // test
+//    GameTimerPhase(name: "Circle Closing", duration: 2),   // test
+//    GameTimerPhase(name: "Explore", duration: 2),   // test
+//    GameTimerPhase(name: "Circle Closing", duration: 2)   // test
 ]
 
 struct ContentView: View {
