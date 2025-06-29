@@ -1,5 +1,6 @@
 import SwiftUI
 import ActivityKit
+import UIKit
 
 struct GameTimerPhase {
     let name: String
@@ -253,11 +254,13 @@ struct ContentView: View {
         }
 
         isRunning = true
-
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             guard isRunning else { return }
             if timeRemaining > 0 {
                 timeRemaining -= 1
+                if timeRemaining == 30 {
+                    triggerHaptic()
+                }
 
                 let sharedDefaults = UserDefaults(suiteName: "group.com.toleary.NightreignTimer")
                 sharedDefaults?.set(currentPhaseName(), forKey: "currentPhaseName")
@@ -385,6 +388,11 @@ struct ContentView: View {
             )
             liveActivity = nil
         }
+    }
+
+    func triggerHaptic() {
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.warning)
     }
 }
 
