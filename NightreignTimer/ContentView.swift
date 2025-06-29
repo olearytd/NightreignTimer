@@ -12,8 +12,8 @@ let dayPhases = [
     GameTimerPhase(name: "First Circle Closing", duration: 180),   // 3:00
     GameTimerPhase(name: "Explore", duration: 210),   // 3:30
     GameTimerPhase(name: "Last Circle Closing", duration: 180)   // 3:00
-//    GameTimerPhase(name: "Explore", duration: 2),   // test
-//    GameTimerPhase(name: "Circle Closing", duration: 2),   // test
+//    GameTimerPhase(name: "Explore", duration: 35),   // test
+//    GameTimerPhase(name: "Circle Closing", duration: 35),   // test
 //    GameTimerPhase(name: "Explore", duration: 2),   // test
 //    GameTimerPhase(name: "Circle Closing", duration: 2)   // test
 ]
@@ -27,6 +27,7 @@ struct ContentView: View {
     @State private var wasPaused = false
     @State private var hasAnswered = false
     @State private var backgroundDate: Date? = nil
+    @State private var showPhaseWarning = false
     @Environment(\.scenePhase) var scenePhase
     @AppStorage("winCount") private var winCount = 0
     @AppStorage("totalAttempts") private var totalAttempts = 0
@@ -83,13 +84,24 @@ struct ContentView: View {
                             .padding(.top)
                         
                         ProgressView(value: progressForCurrentPhase())
-                            .progressViewStyle(LinearProgressViewStyle(tint: .white))
+                            .progressViewStyle(LinearProgressViewStyle(tint: showPhaseWarning ? .yellow : .white))
                             .padding(.horizontal)
                             .animation(.easeInOut(duration: 0.3), value: timeRemaining)
                         
                         Text(timeString(from: timeRemaining))
                             .font(.system(size: 48, weight: .bold, design: .monospaced))
                             .foregroundColor(.white)
+                        
+                        if showPhaseWarning {
+                            Text(
+                                currentPhaseName().contains("Circle") ? "Move to the Safe Zone!" :
+                                currentPhaseName().contains("Explore") ? "The Night Rain Approaches!" :
+                                "Phase ending soon"
+                            )
+                                .font(.title2)
+                                .foregroundColor(.yellow)
+                                .transition(.opacity)
+                        }
 
 
                         if !isRunning && timeRemaining == 0 && currentPhaseIndex == dayPhases.count - 1 && day < 3 {
@@ -133,6 +145,7 @@ struct ContentView: View {
                             timeRemaining = dayPhases[0].duration
                             isRunning = false
                             wasPaused = false
+                            showPhaseWarning = false
                         }
                         .padding(.top)
                         .controlSize(.large)
@@ -260,6 +273,10 @@ struct ContentView: View {
                 timeRemaining -= 1
                 if timeRemaining == 30 {
                     triggerHaptic()
+                    showPhaseWarning = true
+                }
+                if timeRemaining == 0 {
+                    showPhaseWarning = false
                 }
 
                 let sharedDefaults = UserDefaults(suiteName: "group.com.toleary.NightreignTimer")
@@ -374,6 +391,7 @@ struct ContentView: View {
         timeRemaining = dayPhases[0].duration
         isRunning = false
         wasPaused = false
+        showPhaseWarning = false
         hasAnswered = false
         Task {
             await liveActivity?.end(
@@ -391,8 +409,15 @@ struct ContentView: View {
     }
 
     func triggerHaptic() {
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.warning)
+        let notificationGenerator = UINotificationFeedbackGenerator()
+        notificationGenerator.notificationOccurred(.error)
+
+        let impactGenerator = UIImpactFeedbackGenerator(style: .heavy)
+        impactGenerator.impactOccurred()
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            impactGenerator.impactOccurred()
+        }
     }
 }
 
