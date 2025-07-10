@@ -8,14 +8,14 @@ struct GameTimerPhase {
 }
 
 let dayPhases = [
-    GameTimerPhase(name: "Explore", duration: 270),   // 4:30
-    GameTimerPhase(name: "First Circle Closing", duration: 180),   // 3:00
-    GameTimerPhase(name: "Explore", duration: 210),   // 3:30
-    GameTimerPhase(name: "Last Circle Closing", duration: 180)   // 3:00
-//    GameTimerPhase(name: "Explore", duration: 2),   // test
-//    GameTimerPhase(name: "Circle Closing", duration: 2),   // test
-//    GameTimerPhase(name: "Explore", duration: 2),   // test
-//    GameTimerPhase(name: "Circle Closing", duration: 2)   // test
+//    GameTimerPhase(name: "Explore", duration: 270),   // 4:30
+//    GameTimerPhase(name: "First Circle Closing", duration: 180),   // 3:00
+//    GameTimerPhase(name: "Explore", duration: 210),   // 3:30
+//    GameTimerPhase(name: "Last Circle Closing", duration: 180)   // 3:00
+    GameTimerPhase(name: "Explore", duration: 2),   // test
+    GameTimerPhase(name: "Circle Closing", duration: 2),   // test
+    GameTimerPhase(name: "Explore", duration: 2),   // test
+    GameTimerPhase(name: "Circle Closing", duration: 2)   // test
 ]
 
 struct ContentView: View {
@@ -30,8 +30,43 @@ struct ContentView: View {
     @State private var showPhaseWarning = false
     @State private var tooltipText: String = "Start the timer when you see \"Day One\" on screen."
     @Environment(\.scenePhase) var scenePhase
-    @AppStorage("winCount") private var winCount = 0
-    @AppStorage("totalAttempts") private var totalAttempts = 0
+
+    @Environment(\.managedObjectContext) private var viewContext
+    @FetchRequest(
+        entity: GameStats.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \GameStats.id, ascending: false)]
+    ) private var stats: FetchedResults<GameStats>
+
+    private var gameStats: GameStats {
+        if let existing = stats.first {
+            return existing
+        } else {
+            // 1. Read old values from UserDefaults
+            let defaults = UserDefaults.standard
+            let oldWins = defaults.integer(forKey: "winCount")
+            let oldAttempts = defaults.integer(forKey: "totalAttempts")
+
+            // 2. Create and seed new Core Data record
+            let newStats = GameStats(context: viewContext)
+            newStats.id = UUID()
+            newStats.winCount = Int64(oldWins)
+            newStats.totalAttempts = Int64(oldAttempts)
+
+            // 3. Persist and clean up UserDefaults
+            defaults.removeObject(forKey: "winCount")
+            defaults.removeObject(forKey: "totalAttempts")
+            DispatchQueue.main.async {
+                do {
+                    try viewContext.save()
+                } catch {
+                    print("Migration save failed:", error)
+                }
+            }
+
+            return newStats
+        }
+    }
+
     @State private var liveActivity: Activity<NightreignWidgetAttributes>?
 
     var body: some View {
@@ -180,8 +215,10 @@ struct ContentView: View {
                         HStack(spacing: 20) {
                             Button("Yes") {
                                 guard !hasAnswered else { return }
-                                winCount += 1
-                                totalAttempts += 1
+                                let stats = gameStats
+                                stats.winCount += 1
+                                stats.totalAttempts += 1
+                                try? viewContext.save()
                                 hasAnswered = true
                             }
                             .buttonStyle(.borderedProminent)
@@ -190,7 +227,9 @@ struct ContentView: View {
 
                             Button("No") {
                                 guard !hasAnswered else { return }
-                                totalAttempts += 1
+                                let stats = gameStats
+                                stats.totalAttempts += 1
+                                try? viewContext.save()
                                 hasAnswered = true
                             }
                             .buttonStyle(.bordered)
@@ -198,25 +237,27 @@ struct ContentView: View {
                             .font(.title2)
                         }
 
-                        Text("Wins: \(winCount)")
+                        Text("Wins: \(gameStats.winCount)")
                             .font(.title3)
                             .padding(.top)
                             .foregroundColor(.white)
 
-                        Text("Attempts: \(totalAttempts)")
+                        Text("Attempts: \(gameStats.totalAttempts)")
                             .font(.title3)
                             .foregroundColor(.white)
 
-                        if totalAttempts > 0 {
-                            let winRate = Double(winCount) / Double(totalAttempts) * 100
+                        if gameStats.totalAttempts > 0 {
+                            let winRate = Double(gameStats.winCount) / Double(gameStats.totalAttempts) * 100
                             Text(String(format: "Win Rate: %.1f%%", winRate))
                                 .font(.title3)
                                 .foregroundColor(.white)
                         }
 
                         Button("Reset Stats") {
-                            winCount = 0
-                            totalAttempts = 0
+                            let stats = gameStats
+                            stats.winCount = 0
+                            stats.totalAttempts = 0
+                            try? viewContext.save()
                         }
                         .buttonStyle(.bordered)
                         .controlSize(.large)
@@ -235,6 +276,7 @@ struct ContentView: View {
             }
             .padding()
             .onAppear {
+                print("👍 Got a MOC:", viewContext)
                 stopTimer()
                 timeRemaining = dayPhases[currentPhaseIndex].duration
             }
