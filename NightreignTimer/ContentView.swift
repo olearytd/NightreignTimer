@@ -15,7 +15,7 @@ let dayPhases = [
 //    GameTimerPhase(name: "Explore", duration: 2),   // test
 //    GameTimerPhase(name: "Circle Closing", duration: 2),   // test
 //    GameTimerPhase(name: "Explore", duration: 2),   // test
-//    GameTimerPhase(name: "Circle Closing", duration: 2)   // test
+//    GameTimerPhase(name: "Circle Closing", duration: 32)   // test
 ]
 
 struct ContentView: View {
