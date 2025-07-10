@@ -8,14 +8,14 @@ struct GameTimerPhase {
 }
 
 let dayPhases = [
-//    GameTimerPhase(name: "Explore", duration: 270),   // 4:30
-//    GameTimerPhase(name: "First Circle Closing", duration: 180),   // 3:00
-//    GameTimerPhase(name: "Explore", duration: 210),   // 3:30
-//    GameTimerPhase(name: "Last Circle Closing", duration: 180)   // 3:00
-    GameTimerPhase(name: "Explore", duration: 2),   // test
-    GameTimerPhase(name: "Circle Closing", duration: 2),   // test
-    GameTimerPhase(name: "Explore", duration: 2),   // test
-    GameTimerPhase(name: "Circle Closing", duration: 2)   // test
+    GameTimerPhase(name: "Explore", duration: 270),   // 4:30
+    GameTimerPhase(name: "First Circle Closing", duration: 180),   // 3:00
+    GameTimerPhase(name: "Explore", duration: 210),   // 3:30
+    GameTimerPhase(name: "Last Circle Closing", duration: 180)   // 3:00
+//    GameTimerPhase(name: "Explore", duration: 2),   // test
+//    GameTimerPhase(name: "Circle Closing", duration: 2),   // test
+//    GameTimerPhase(name: "Explore", duration: 2),   // test
+//    GameTimerPhase(name: "Circle Closing", duration: 2)   // test
 ]
 
 struct ContentView: View {
@@ -69,8 +69,11 @@ struct ContentView: View {
 
     @State private var liveActivity: Activity<NightreignWidgetAttributes>?
 
+    @State private var showingSettings = false
+
     var body: some View {
-        ZStack {
+        NavigationStack {
+            ZStack {
             LinearGradient(
                 gradient: Gradient(colors: [
                     Color(red: 35/255, green: 20/255, blue: 50/255), // deep purple
@@ -296,6 +299,20 @@ struct ContentView: View {
                     break
                 }
             }
+        }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            showingSettings = true
+                        } label: {
+                            Image(systemName: "gearshape")
+                        }
+                    }
+                }
+        } // end NavigationStack
+        .sheet(isPresented: $showingSettings) {
+            SettingsView()
+                .environment(\.managedObjectContext, viewContext)
         }
     }
 
