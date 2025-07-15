@@ -222,6 +222,7 @@ struct ContentView: View {
                                 let stats = gameStats
                                 stats.winCount += 1
                                 stats.totalAttempts += 1
+                                stats.dateTime = Date()
                                 try? viewContext.save()
                                 hasAnswered = true
                             }
@@ -233,6 +234,7 @@ struct ContentView: View {
                                 guard !hasAnswered else { return }
                                 let stats = gameStats
                                 stats.totalAttempts += 1
+                                stats.dateTime = Date()
                                 try? viewContext.save()
                                 hasAnswered = true
                             }
@@ -249,6 +251,7 @@ struct ContentView: View {
                         Text("Attempts: \(gameStats.totalAttempts)")
                             .font(.title3)
                             .foregroundColor(.white)
+
 
                         if gameStats.totalAttempts > 0 {
                             let winRate = Double(gameStats.winCount) / Double(gameStats.totalAttempts) * 100
