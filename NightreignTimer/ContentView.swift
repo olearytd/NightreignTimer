@@ -19,6 +19,7 @@ let dayPhases = [
 ]
 
 struct ContentView: View {
+    @AppStorage("batterySaverEnabled") private var batterySaverEnabled: Bool = false
     @State private var timer: Timer? = nil
     @State private var timeRemaining: TimeInterval = dayPhases.first?.duration ?? 0
     @State private var isRunning = false
@@ -221,6 +222,7 @@ struct ContentView: View {
                                 let stats = gameStats
                                 stats.winCount += 1
                                 stats.totalAttempts += 1
+                                stats.dateTime = Date()
                                 try? viewContext.save()
                                 hasAnswered = true
                             }
@@ -232,6 +234,7 @@ struct ContentView: View {
                                 guard !hasAnswered else { return }
                                 let stats = gameStats
                                 stats.totalAttempts += 1
+                                stats.dateTime = Date()
                                 try? viewContext.save()
                                 hasAnswered = true
                             }
@@ -248,6 +251,7 @@ struct ContentView: View {
                         Text("Attempts: \(gameStats.totalAttempts)")
                             .font(.title3)
                             .foregroundColor(.white)
+
 
                         if gameStats.totalAttempts > 0 {
                             let winRate = Double(gameStats.winCount) / Double(gameStats.totalAttempts) * 100
@@ -282,6 +286,7 @@ struct ContentView: View {
                 print("👍 Got a MOC:", viewContext)
                 stopTimer()
                 timeRemaining = dayPhases[currentPhaseIndex].duration
+                UIApplication.shared.isIdleTimerDisabled = !batterySaverEnabled
             }
             .onChange(of: scenePhase) {
                 switch scenePhase {
@@ -295,6 +300,7 @@ struct ContentView: View {
                         timeRemaining = max(0, timeRemaining - elapsed)
                     }
                     backgroundDate = nil
+                    UIApplication.shared.isIdleTimerDisabled = !batterySaverEnabled
                 default:
                     break
                 }
