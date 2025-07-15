@@ -5,6 +5,8 @@ struct SettingsView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
 
+    @AppStorage("batterySaverEnabled") private var batterySaverEnabled: Bool = false
+
     @State private var iCloudStatus: CKAccountStatus?
 
     var body: some View {
@@ -27,6 +29,12 @@ struct SettingsView: View {
                     } else {
                         Text("Checking iCloud status…")
                     }
+                }
+                Section(header: Text("Battery")) {
+                    Toggle("Battery Saver", isOn: $batterySaverEnabled)
+                    Text("When enabled, your screen may dim or turn off to conserve power.")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
                 }
             }
             .navigationTitle("Settings")

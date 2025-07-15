@@ -19,6 +19,7 @@ let dayPhases = [
 ]
 
 struct ContentView: View {
+    @AppStorage("batterySaverEnabled") private var batterySaverEnabled: Bool = false
     @State private var timer: Timer? = nil
     @State private var timeRemaining: TimeInterval = dayPhases.first?.duration ?? 0
     @State private var isRunning = false
@@ -282,6 +283,7 @@ struct ContentView: View {
                 print("👍 Got a MOC:", viewContext)
                 stopTimer()
                 timeRemaining = dayPhases[currentPhaseIndex].duration
+                UIApplication.shared.isIdleTimerDisabled = !batterySaverEnabled
             }
             .onChange(of: scenePhase) {
                 switch scenePhase {
@@ -295,6 +297,7 @@ struct ContentView: View {
                         timeRemaining = max(0, timeRemaining - elapsed)
                     }
                     backgroundDate = nil
+                    UIApplication.shared.isIdleTimerDisabled = !batterySaverEnabled
                 default:
                     break
                 }
