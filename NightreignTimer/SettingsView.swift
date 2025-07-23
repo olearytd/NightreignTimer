@@ -27,7 +27,7 @@ struct SettingsView: View {
                             Label(NSLocalizedString("unknown_status", comment: "Unknown Status label"), systemImage: "questionmark")
                         }
                     } else {
-                        Text("Checking iCloud status…")
+                        Text(NSLocalizedString("check_icloud_status", comment: "iCloud Status text"))
                     }
                 }
                 Section(header: Text(NSLocalizedString("battery", comment: "Battery label"))) {
