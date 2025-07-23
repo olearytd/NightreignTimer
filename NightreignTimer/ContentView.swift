@@ -8,14 +8,14 @@ struct GameTimerPhase {
 }
 
 let dayPhases = [
-    GameTimerPhase(name: "Explore", duration: 270),   // 4:30
-    GameTimerPhase(name: "First Circle Closing", duration: 180),   // 3:00
-    GameTimerPhase(name: "Explore", duration: 210),   // 3:30
-    GameTimerPhase(name: "Last Circle Closing", duration: 180)   // 3:00
-//    GameTimerPhase(name: "Explore", duration: 2),   // test
-//    GameTimerPhase(name: "Circle Closing", duration: 2),   // test
-//    GameTimerPhase(name: "Explore", duration: 2),   // test
-//    GameTimerPhase(name: "Circle Closing", duration: 32)   // test
+    GameTimerPhase(name: NSLocalizedString("phase_explore", comment: "Explore phase"), duration: 270),   // 4:30
+    GameTimerPhase(name: NSLocalizedString("phase_first_circle", comment: "First Circle Closing phase"), duration: 180),   // 3:00
+    GameTimerPhase(name: NSLocalizedString("phase_explore", comment: "Explore phase"), duration: 210),   // 3:30
+    GameTimerPhase(name: NSLocalizedString("phase_last_circle", comment: "Last Circle Closing phase"), duration: 180)   // 3:00
+//    GameTimerPhase(name: NSLocalizedString("phase_explore", comment: "Explore phase"), duration: 2),   // test
+//    GameTimerPhase(name: NSLocalizedString("phase_first_circle", comment: "First Circle Closing phase"), duration: 2),   // test
+//    GameTimerPhase(name: NSLocalizedString("phase_explore", comment: "Explore phase"), duration: 2),   // test
+//    GameTimerPhase(name: NSLocalizedString("phase_last_circle", comment: "Last Circle Closing phase"), duration: 32)   // test
 ]
 
 struct ContentView: View {
@@ -29,7 +29,7 @@ struct ContentView: View {
     @State private var hasAnswered = false
     @State private var backgroundDate: Date? = nil
     @State private var showPhaseWarning = false
-    @State private var tooltipText: String = "Start the timer when you see \"Day One\" on screen."
+    @State private var tooltipText: String = NSLocalizedString("start_timer_tooltip_day_1", comment: "Tooltip for starting timer on Day 1")
     @Environment(\.scenePhase) var scenePhase
 
     @Environment(\.managedObjectContext) private var viewContext
@@ -86,25 +86,25 @@ struct ContentView: View {
             .ignoresSafeArea()
             VStack {
                 VStack(spacing: 4) {
-                    Text("ER Nightreign")
+                    Text(NSLocalizedString("title_er_nightreign", comment: "Title: ER Nightreign"))
                         .font(.largeTitle)
                         .fontWeight(.semibold)
                         .foregroundStyle(Color("EldenBlue"))
                         .shadow(color: .black.opacity(0.9), radius: 4, x: 0, y: 4)
                         .overlay(
-                            Text("ER Nightreign")
+                            Text(NSLocalizedString("title_er_nightreign", comment: "Title: ER Nightreign"))
                                 .font(.largeTitle)
                                 .fontWeight(.semibold)
                                 .foregroundColor(.white.opacity(0.2))
                                 .offset(x: 1, y: 1)
                         )
-                    Text("Timer")
+                    Text(NSLocalizedString("title_timer", comment: "Title: Timer"))
                         .font(.largeTitle)
                         .fontWeight(.medium)
                         .foregroundStyle(Color("EldenBlue"))
                         .shadow(color: .black.opacity(0.9), radius: 4, x: 0, y: 4)
                         .overlay(
-                            Text("Timer")
+                            Text(NSLocalizedString("title_timer", comment: "Title: Timer"))
                                 .font(.largeTitle)
                                 .fontWeight(.medium)
                                 .foregroundColor(.white.opacity(0.2))
@@ -116,7 +116,7 @@ struct ContentView: View {
                 Spacer()
                 if day < 3 {
                     VStack(spacing: 30) {
-                        Text("Day \(dayName()): \n\(currentPhaseName())")
+                        Text(String(format: NSLocalizedString("day_label", comment: "Day label with phase"), dayName(), currentPhaseName()))
                             .font(.largeTitle)
                             .foregroundColor(.white)
                             .multilineTextAlignment(.center)
@@ -134,9 +134,9 @@ struct ContentView: View {
                         
                         if showPhaseWarning {
                             Text(
-                                currentPhaseName().contains("Circle") ? "Move to the Safe Zone!" :
-                                currentPhaseName().contains("Explore") ? "The Night Rain Approaches!" :
-                                "Phase ending soon"
+                                currentPhaseName().contains("Circle") ? NSLocalizedString("warning_circle", comment: "Move to the Safe Zone warning") :
+                                currentPhaseName().contains("Explore") ? NSLocalizedString("warning_explore", comment: "The Night Rain Approaches warning") :
+                                NSLocalizedString("warning_default", comment: "Phase ending soon warning")
                             )
                                 .font(.title2)
                                 .foregroundColor(.yellow)
@@ -145,12 +145,15 @@ struct ContentView: View {
 
 
                         if !isRunning && timeRemaining == 0 && currentPhaseIndex == dayPhases.count - 1 && day < 3 {
-                            Button(day + 1 == 3 ? "Fight the Nightlord" : "Start Day \(dayName(for: day + 1))") {
+                            Button(day + 1 == 3 ?
+                                   NSLocalizedString("fight_nightlord", comment: "Fight the Nightlord button") :
+                                   String(format: NSLocalizedString("start_day_X", comment: "Start Day X button"), dayName(for: day + 1))
+                            ) {
                                 day += 1
                                 currentPhaseIndex = 0
                                 timeRemaining = dayPhases[0].duration
                                 wasPaused = false
-                                tooltipText = "Start the timer when you see \"Day \(dayName())\" on screen."
+                                tooltipText = String(format: NSLocalizedString("start_timer_tooltip_day_X", comment: "Tooltip for starting timer on Day X"), dayName())
                                 if day == 2 {
                                     startTimer()
                                 }
@@ -179,8 +182,8 @@ struct ContentView: View {
                             }
                         }
 
-                        Button("Reset") {
-                            tooltipText = "Start the timer when you see \"Day One\" on screen."
+                        Button(NSLocalizedString("reset", comment: "Reset button")) {
+                            tooltipText = NSLocalizedString("start_timer_tooltip_day_1", comment: "Tooltip for starting timer on Day 1")
                             stopTimer()
                             day = 1
                             currentPhaseIndex = 0
@@ -208,16 +211,16 @@ struct ContentView: View {
 
                 if day == 3 && !isRunning && currentPhaseIndex == 0 && timeRemaining == dayPhases[0].duration {
                     VStack(spacing: 20) {
-                        Text("Nightlord Battle")
+                        Text(NSLocalizedString("nightlord_battle", comment: "Nightlord Battle title"))
                             .font(.largeTitle)
                             .bold()
                             .foregroundColor(.white)
-                        Text("Did you win?")
+                        Text(NSLocalizedString("did_you_win", comment: "Did you win?"))
                             .font(.title2)
                             .foregroundColor(.white)
 
                         HStack(spacing: 20) {
-                            Button("Yes") {
+                            Button(NSLocalizedString("yes", comment: "Yes")) {
                                 guard !hasAnswered else { return }
                                 let stats = gameStats
                                 stats.winCount += 1
@@ -230,7 +233,7 @@ struct ContentView: View {
                             .controlSize(.large)
                             .font(.title2)
 
-                            Button("No") {
+                            Button(NSLocalizedString("no", comment: "No")) {
                                 guard !hasAnswered else { return }
                                 let stats = gameStats
                                 stats.totalAttempts += 1
@@ -243,24 +246,23 @@ struct ContentView: View {
                             .font(.title2)
                         }
 
-                        Text("Wins: \(gameStats.winCount)")
+                        Text(String(format: NSLocalizedString("wins", comment: "Wins label"), "\(gameStats.winCount)"))
                             .font(.title3)
                             .padding(.top)
                             .foregroundColor(.white)
 
-                        Text("Attempts: \(gameStats.totalAttempts)")
+                        Text(String(format: NSLocalizedString("attempts", comment: "Attempts label"), "\(gameStats.totalAttempts)"))
                             .font(.title3)
                             .foregroundColor(.white)
 
-
                         if gameStats.totalAttempts > 0 {
                             let winRate = Double(gameStats.winCount) / Double(gameStats.totalAttempts) * 100
-                            Text(String(format: "Win Rate: %.1f%%", winRate))
+                            Text(String(format: NSLocalizedString("win_rate", comment: "Win Rate label"), winRate))
                                 .font(.title3)
                                 .foregroundColor(.white)
                         }
 
-                        Button("Reset Stats") {
+                        Button(NSLocalizedString("reset_stats", comment: "Reset Stats")) {
                             let stats = gameStats
                             stats.winCount = 0
                             stats.totalAttempts = 0
@@ -271,7 +273,7 @@ struct ContentView: View {
                         .foregroundColor(.white)
                         .padding(.top)
 
-                        Button("Restart") {
+                        Button(NSLocalizedString("restart", comment: "Restart")) {
                             restartGame()
                         }
                         .buttonStyle(.borderedProminent)
@@ -386,7 +388,7 @@ struct ContentView: View {
                     ActivityContent(
                         state: NightreignWidgetAttributes.ContentState(
                             timeRemaining: 0,
-                            phaseLabel: "Done"
+                            phaseLabel: NSLocalizedString("done", comment: "Done phase label")
                         ),
                         staleDate: nil
                     ),
@@ -398,7 +400,7 @@ struct ContentView: View {
             if day + 1 == 3 {
                 tooltipText = ""
             } else {
-                tooltipText = "Start the timer when you see \"Day \(dayName(for: day + 1))\" on screen."
+                tooltipText = String(format: NSLocalizedString("start_timer_tooltip_day_X", comment: "Tooltip for starting timer on Day X"), dayName(for: day + 1))
             }
         }
     }
@@ -456,11 +458,11 @@ struct ContentView: View {
     
     func buttonLabel() -> String {
         if isRunning {
-            return "Pause"
+            return NSLocalizedString("pause", comment: "Pause button")
         } else if wasPaused {
-            return "Resume"
+            return NSLocalizedString("resume", comment: "Resume button")
         } else {
-            return "Start Day \(dayName())"
+            return String(format: NSLocalizedString("start_day", comment: "Start Day X button"), dayName())
         }
     }
 
@@ -473,13 +475,13 @@ struct ContentView: View {
         wasPaused = false
         showPhaseWarning = false
         hasAnswered = false
-        tooltipText = "Start the timer when you see \"Day One\" on screen."
+        tooltipText = NSLocalizedString("start_timer_tooltip_day_1", comment: "Tooltip for starting timer on Day 1")
         Task {
             await liveActivity?.end(
                 ActivityContent(
                     state: NightreignWidgetAttributes.ContentState(
                         timeRemaining: 0,
-                        phaseLabel: "Reset"
+                        phaseLabel: NSLocalizedString("reset_phase_label", comment: "Reset phase label")
                     ),
                     staleDate: nil
                 ),

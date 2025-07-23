@@ -12,35 +12,35 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(header: Text("iCloud Sync")) {
+                Section(header: Text(NSLocalizedString("icloud_sync", comment: "iCloud Sync label"))) {
                     if let status = iCloudStatus {
                         switch status {
                         case .available:
-                            Label("Sync Enabled", systemImage: "cloud.fill")
+                            Label(NSLocalizedString("sync_enabled", comment: "Sync Enabled label"), systemImage: "cloud.fill")
                         case .noAccount:
-                            Label("No iCloud Account", systemImage: "cloud.slash")
+                            Label(NSLocalizedString("no_icloud_account", comment: "No Account label"), systemImage: "cloud.slash")
                         case .restricted:
-                            Label("iCloud Restricted", systemImage: "exclamationmark.triangle")
+                            Label(NSLocalizedString("icloud_restricted", comment: "iCloud Restricted label"), systemImage: "exclamationmark.triangle")
                         case .couldNotDetermine:
-                            Label("Unknown Status", systemImage: "questionmark")
+                            Label(NSLocalizedString("unknown_status", comment: "Unknown Status label"), systemImage: "questionmark")
                         default:
-                            Label("Unknown Status", systemImage: "questionmark")
+                            Label(NSLocalizedString("unknown_status", comment: "Unknown Status label"), systemImage: "questionmark")
                         }
                     } else {
                         Text("Checking iCloud status…")
                     }
                 }
-                Section(header: Text("Battery")) {
-                    Toggle("Battery Saver", isOn: $batterySaverEnabled)
-                    Text("When enabled, your screen may dim or turn off to conserve power.")
+                Section(header: Text(NSLocalizedString("battery", comment: "Battery label"))) {
+                    Toggle(NSLocalizedString("battery_saver", comment: "Battery Saver label"), isOn: $batterySaverEnabled)
+                    Text(NSLocalizedString("battery_info", comment: "Battery info text"))
                         .font(.footnote)
                         .foregroundColor(.secondary)
                 }
             }
-            .navigationTitle("Settings")
+            .navigationTitle(NSLocalizedString("settings", comment: "Settings label"))
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
+                    Button(NSLocalizedString("done", comment: "Done phase label")) {
                         dismiss()
                     }
                 }
