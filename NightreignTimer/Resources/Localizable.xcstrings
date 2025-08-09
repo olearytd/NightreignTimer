@@ -370,6 +370,88 @@
         }
       }
     },
+    "game_type" : {
+      "comment" : "Game Type Selection",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Game Type"
+          }
+        },
+        "es-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipo de juego"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type de jeu"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ゲームタイプ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "게임 유형"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "遊戲類型"
+          }
+        }
+      }
+    },
+    "hero_name" : {
+      "comment" : "Hero Selection",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hero"
+          }
+        },
+        "es-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Héroe"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Héros"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヒーロー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "영웅"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "英雄"
+          }
+        }
+      }
+    },
     "icloud_restricted" : {
       "comment" : "iCloud Restricted label",
       "localizations" : {
@@ -489,6 +571,47 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "夜之君戰鬥"
+          }
+        }
+      }
+    },
+    "nightlord_name" : {
+      "comment" : "Nightlord Selection",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nightlord"
+          }
+        },
+        "es-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Señor de la Noche"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seigneur de la Nuit"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ナイトロード"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "나이트로드"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "夜之領主"
           }
         }
       }
@@ -739,6 +862,47 @@
         }
       }
     },
+    "ready" : {
+      "comment" : "ready",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ready"
+          }
+        },
+        "es-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Listo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prêt"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "準備完了"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "준비"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "準備好"
+          }
+        }
+      }
+    },
     "reset" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -985,6 +1149,47 @@
         }
       }
     },
+    "setup_description" : {
+      "comment" : "Setup Description Tooltip",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select your Game Type, Hero, and Nightlord for this run. Tap Ready when you’re done."
+          }
+        },
+        "es-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecciona tu tipo de juego, héroe y Señor de la Noche para esta partida. Pulsa Listo cuando termines."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sélectionnez votre type de jeu, héros et Seigneur de la Nuit pour cette partie. Appuyez sur Prêt lorsque vous avez terminé."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このランのゲームタイプ、ヒーロー、ナイトロードを選択してください。完了したら「準備完了」をタップしてください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이번 실행을 위한 게임 유형, 영웅, 나이트로드를 선택하세요. 완료되면 준비 버튼을 누르세요."
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "為此次遊戲選擇遊戲類型、英雄和夜之領主。完成後點擊準備好。"
+          }
+        }
+      }
+    },
     "start_day" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1227,6 +1432,47 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "艾爾登法環：夜雨"
+          }
+        }
+      }
+    },
+    "title_er_nightreign_timer" : {
+      "comment" : "Title: ER Nightreign Timer",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ER Nightreign Timer"
+          }
+        },
+        "es-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temporizador ER Nightreign"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minuteur ER Nightreign"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ERナイトレインタイマー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ER 나이트레인 타이머"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ER 夜幕計時器"
           }
         }
       }

@@ -183,14 +183,29 @@ struct ContentView: View {
                         }
 
                         Button(NSLocalizedString("reset", comment: "Reset button")) {
+                            // Reset tooltip text as before
                             tooltipText = NSLocalizedString("start_timer_tooltip_day_1", comment: "Tooltip for starting timer on Day 1")
-                            stopTimer()
-                            day = 1
-                            currentPhaseIndex = 0
-                            timeRemaining = dayPhases[0].duration
-                            isRunning = false
-                            wasPaused = false
-                            showPhaseWarning = false
+                            // End the live activity if running (same as in restartGame)
+                            Task {
+                                await liveActivity?.end(
+                                    ActivityContent(
+                                        state: NightreignWidgetAttributes.ContentState(
+                                            timeRemaining: 0,
+                                            phaseLabel: NSLocalizedString("reset_phase_label", comment: "Reset phase label")
+                                        ),
+                                        staleDate: nil
+                                    ),
+                                    dismissalPolicy: .immediate
+                                )
+                            }
+                            // Navigate back to SetupView by replacing the root view
+                            if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                               let window = scene.windows.first {
+                                window.rootViewController = UIHostingController(
+                                    rootView: SetupView().environment(\.managedObjectContext, viewContext)
+                                )
+                                window.makeKeyAndVisible()
+                            }
                         }
                         .padding(.top)
                         .controlSize(.large)
@@ -467,15 +482,7 @@ struct ContentView: View {
     }
 
     func restartGame() {
-        stopTimer()
-        day = 1
-        currentPhaseIndex = 0
-        timeRemaining = dayPhases[0].duration
-        isRunning = false
-        wasPaused = false
-        showPhaseWarning = false
-        hasAnswered = false
-        tooltipText = NSLocalizedString("start_timer_tooltip_day_1", comment: "Tooltip for starting timer on Day 1")
+        // End the live activity if running
         Task {
             await liveActivity?.end(
                 ActivityContent(
@@ -487,7 +494,14 @@ struct ContentView: View {
                 ),
                 dismissalPolicy: .immediate
             )
-            liveActivity = nil
+        }
+        // Navigate back to SetupView by replacing the root view
+        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = scene.windows.first {
+            window.rootViewController = UIHostingController(
+                rootView: SetupView().environment(\.managedObjectContext, viewContext)
+            )
+            window.makeKeyAndVisible()
         }
     }
 
