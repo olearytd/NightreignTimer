@@ -14,7 +14,7 @@ struct NightreignTimerApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SetupView()
                 .environment(\.managedObjectContext,
                              persistenceController.container.viewContext)
         }
