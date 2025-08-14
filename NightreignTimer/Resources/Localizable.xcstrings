@@ -329,9 +329,6 @@
         }
       }
     },
-    "Done" : {
-
-    },
     "fight_nightlord" : {
       "extractionState" : "manual",
       "localizations" : {

@@ -159,7 +159,7 @@ struct SelectField: View {
                     .navigationTitle(NSLocalizedString(title, comment: ""))
                     .toolbar {
                         ToolbarItem(placement: .topBarTrailing) {
-                            Button("Done") { isPresenting = false }
+                            Button(NSLocalizedString("done", comment: "Done button")) { isPresenting = false }
                         }
                     }
                 }
