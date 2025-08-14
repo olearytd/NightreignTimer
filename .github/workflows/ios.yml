@@ -13,32 +13,145 @@ env:
 
 jobs:
   build-and-test:
-    runs-on: macos-15
+    runs-on: macos-14
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ⬇️ THIS STEP IS NOW FIXED ⬇️
+      - name: Select Xcode 16
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '16.*'
+
+      - name: Ensure iOS simulator runtime is installed
+        shell: bash
+        run: |
+          set -euo pipefail
+          # If no available iOS runtimes are present, download the iOS platform.
+          if ! xcrun simctl list --json runtimes | /usr/bin/python3 - <<'PY'
+          import json, sys
+          data = json.load(sys.stdin)
+          ios = [rt for rt in data.get("runtimes", []) if rt.get("platform") == "iOS" and rt.get("isAvailable")]
+          sys.exit(0 if ios else 1)
+          PY
+          then
+            echo "No iOS simulator runtime detected. Downloading iOS platform..."
+            xcodebuild -downloadPlatform iOS
+          else
+            echo "iOS simulator runtime detected."
+          fi
+
       - name: Select latest available iPhone simulator
         id: set_simulator
+        shell: bash
         run: |
-          # Find the UUID of the last available iPhone simulator
-          # This command is more robust and correctly extracts the UUID
-          SIMULATOR_UUID=$(xcrun simctl list devices available | grep "iPhone" | tail -1 | grep -oE '[A-F0-9]{8}-([A-F0-9]{4}-){3}[A-F0-9]{12}')
-          echo "device_id=$SIMULATOR_UUID" >> "$GITHUB_OUTPUT"
-          echo "Selected simulator ID: $SIMULATOR_UUID"
+          set -euo pipefail
+          /usr/bin/python3 - <<'PY'
+          import json, subprocess, sys, time
+
+          def run_json(cmd):
+              r = subprocess.run(cmd, capture_output=True, text=True, check=True)
+              return json.loads(r.stdout)
+
+          def ver_tuple(v):
+              return tuple(int(x) for x in v.split("."))
+
+          preferred_name = "iPhone 16 Pro Max"
+
+          # 1) Get available iOS runtimes, newest first
+          runtimes = run_json(["xcrun","simctl","list","--json","runtimes"]).get("runtimes", [])
+          ios = [rt for rt in runtimes if rt.get("platform") == "iOS" and rt.get("isAvailable")]
+          if not ios:
+              print("::error::No iOS runtimes available on this runner"); sys.exit(1)
+          ios.sort(key=lambda rt: ver_tuple(rt.get("version","0")), reverse=True)
+
+          # 2) Get device types and find identifiers for preferred and fallback iPhones
+          dev_types = run_json(["xcrun","simctl","list","--json","devicetypes"]).get("devicetypes", [])
+          type_by_name = {dt["name"]: dt["identifier"] for dt in dev_types}
+          iphone_types = [dt for dt in dev_types if dt["name"].startswith("iPhone")]
+          preferred_type_id = type_by_name.get(preferred_name)
+          fallback_type_id = iphone_types[0]["identifier"] if iphone_types else None
+
+          chosen = None
+          chosen_runtime = None
+
+          for rt in ios:
+              runtime_id = rt["identifier"]  # e.g., com.apple.CoreSimulator.SimRuntime.iOS-18-4
+              # 3) Check existing devices for this runtime
+              devices = run_json(["xcrun","simctl","list","--json","devices", runtime_id]).get("devices", {}).get(runtime_id, [])
+              avail = [d for d in devices if d.get("isAvailable")]
+
+              # Prefer preferred_name if present
+              named = [d for d in avail if d.get("name") == preferred_name]
+              if named:
+                  chosen = named[0]
+                  chosen_runtime = runtime_id
+                  break
+
+              # Otherwise any iPhone on this runtime
+              iphones = [d for d in avail if d.get("name","").startswith("iPhone")]
+              if iphones:
+                  chosen = iphones[0]
+                  chosen_runtime = runtime_id
+                  break
+
+              # 4) If no devices exist for this runtime, try to create one and use it
+              dev_type_id = preferred_type_id or fallback_type_id
+              if not dev_type_id:
+                  # No iPhone device types? skip this runtime
+                  continue
+              sim_name = f"{preferred_name} ({rt.get('version','')})"
+              try:
+                  created = subprocess.run(
+                      ["xcrun","simctl","create", sim_name, dev_type_id, runtime_id],
+                      capture_output=True, text=True, check=True
+                  )
+                  udid = created.stdout.strip()
+                  # Give CoreSimulator a brief moment to register the new device
+                  time.sleep(2)
+                  # Verify availability
+                  post = run_json(["xcrun","simctl","list","--json","devices", runtime_id]).get("devices", {}).get(runtime_id, [])
+                  match = next((d for d in post if d.get("udid") == udid), None)
+                  if match:
+                      chosen = match
+                      chosen_runtime = runtime_id
+                      break
+              except subprocess.CalledProcessError as e:
+                  # Could not create for this runtime; try the next older runtime
+                  continue
+
+          if not chosen or not chosen_runtime:
+              print("::error::No available simulators for any installed iOS runtime"); sys.exit(1)
+
+          print(f"id={chosen['udid']}")
+          print(f"name={chosen['name']}")
+          print(f"runtime={chosen_runtime}")
+          PY
+          # Map python prints to GitHub Outputs
+          {
+            while IFS='=' read -r k v; do
+              [[ -z "${k:-}" || -z "${v:-}" ]] && continue
+              echo "$k=$v" >> "$GITHUB_OUTPUT"
+              echo "Selected $k: $v"
+            done
+          } <(tail -n 3)
+
+      - name: Boot simulator
+        run: |
+          xcrun simctl boot "${{ steps.set_simulator.outputs.id }}" || true
+          xcrun simctl bootstatus "${{ steps.set_simulator.outputs.id }}" -b
 
       - name: Build
         run: |
           xcodebuild build-for-testing \
             -scheme "$SCHEME_NAME" \
             -project "$PROJECT_NAME" \
-            -destination "platform=iOS Simulator,id=${{ steps.set_simulator.outputs.device_id }}"
+            -destination "platform=iOS Simulator,id=${{ steps.set_simulator.outputs.id }}"
 
       - name: Test
         run: |
           xcodebuild test-without-building \
             -scheme "$SCHEME_NAME" \
             -project "$PROJECT_NAME" \
-            -destination "platform=iOS Simulator,id=${{ steps.set_simulator.outputs.device_id }}"
+            -destination "platform=iOS Simulator,id=${{ steps.set_simulator.outputs.id }}"

@@ -18,11 +18,14 @@ struct SetupView: View {
         "Darkdrift Knight",
         "Fissure in the Fog",
         "Night Aspect",
+        "Tricephalos (Everdark)",
         "Gaping Jaw (Everdark)",
         "Sentient Pest (Everdark)",
         "Augur (Everdark)",
+        "Equilibrious Beast (Everdark)",
         "Darkdrift Knight (Everdark)",
-        "Fissure in the Fog (Everdark)"
+        "Fissure in the Fog (Everdark)",
+        "Night Aspect (Everdark)",
     ]
 
     var body: some View {
@@ -65,101 +68,9 @@ struct SetupView: View {
                         .padding(.horizontal)
 
                     VStack(spacing: 36) {
-                        // Game Type Picker
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(NSLocalizedString("game_type", comment: "Game Type Selection"))
-                                .font(.title3)
-                                .fontWeight(.medium)
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity, alignment: .center)
-                            GeometryReader { geometry in
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                        .fill(Color.white.opacity(0.08))
-                                    HStack {
-                                        Spacer()
-                                        Picker(NSLocalizedString("game_type", comment: "Game Type Selection"), selection: $selectedGameType) {
-                                            ForEach(gameTypes, id: \.self) { type in
-                                                Text(type)
-                                            }
-                                        }
-                                        .pickerStyle(.menu)
-                                        .labelsHidden()
-                                        // Removed .frame(maxWidth: .infinity) here
-                                        Spacer()
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                }
-                                .contentShape(Rectangle())
-                                .frame(width: geometry.size.width * 0.8, height: 48)
-                                .position(x: geometry.size.width / 2, y: 24)
-                            }
-                            .frame(height: 48)
-                        }
-
-                        // Character Picker
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(NSLocalizedString("hero_name", comment: "Hero Selection"))
-                                .font(.title3)
-                                .fontWeight(.medium)
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity, alignment: .center)
-                            GeometryReader { geometry in
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                        .fill(Color.white.opacity(0.08))
-                                    HStack {
-                                        Spacer()
-                                        Picker(NSLocalizedString("hero_name", comment: "Hero Selection"), selection: $selectedCharacter) {
-                                            ForEach(characters, id: \.self) { character in
-                                                Text(character)
-                                            }
-                                        }
-                                        .pickerStyle(.menu)
-                                        .labelsHidden()
-                                        // Removed .frame(maxWidth: .infinity) here
-                                        Spacer()
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                }
-                                .contentShape(Rectangle())
-                                .frame(width: geometry.size.width * 0.8, height: 48)
-                                .position(x: geometry.size.width / 2, y: 24)
-                            }
-                            .frame(height: 48)
-                        }
-
-                        // Nightlord Picker
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(NSLocalizedString("nightlord_name", comment: "Nightlord Selection"))
-                                .font(.title3)
-                                .fontWeight(.medium)
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity, alignment: .center)
-                            GeometryReader { geometry in
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                        .fill(Color.white.opacity(0.08))
-                                    HStack {
-                                        Spacer()
-                                        Picker(NSLocalizedString("nightlord_name", comment: "Nightlord Selection"), selection: $selectedNightLord) {
-                                            ForEach(nightLords, id: \.self) { lord in
-                                                Text(lord)
-                                            }
-                                        }
-                                        .pickerStyle(.menu)
-                                        .labelsHidden()
-                                        // Removed .frame(maxWidth: .infinity) here
-                                        Spacer()
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                }
-                                .contentShape(Rectangle())
-                                .frame(width: geometry.size.width * 0.8, height: 48)
-                                .position(x: geometry.size.width / 2, y: 24)
-                            }
-                            .frame(height: 48)
-                        }
+                        SelectField(title: "game_type", options: gameTypes, selection: $selectedGameType)
+                        SelectField(title: "hero_name",  options: characters, selection: $selectedCharacter)
+                        SelectField(title: "nightlord_name", options: nightLords, selection: $selectedNightLord)
                     }
                     .padding(.horizontal)
                     .padding(.vertical, 24)
@@ -195,5 +106,76 @@ struct SetupView: View {
         stats.winCount = 0
         stats.totalAttempts = 0
         try? viewContext.save()
+    }
+}
+
+struct SelectField: View {
+    let title: String
+    let options: [String]
+    @Binding var selection: String
+    @State private var isPresenting = false
+    @State private var query = ""
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(NSLocalizedString(title, comment: ""))
+                .font(.title3).fontWeight(.medium)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, alignment: .center)
+
+            Button {
+                isPresenting = true
+            } label: {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .fill(Color.white.opacity(0.08))
+                        .frame(height: 48)
+                    HStack {
+                        Text(selection).foregroundColor(.white.opacity(0.9))
+                        Spacer()
+                        Image(systemName: "chevron.down").foregroundColor(.white.opacity(0.6))
+                    }
+                    .padding(.horizontal)
+                }
+            }
+            .sheet(isPresented: $isPresenting) {
+                NavigationStack {
+                    List(filtered) { item in
+                        Button {
+                            selection = item.value
+                            isPresenting = false
+                        } label: {
+                            HStack {
+                                Text(item.value)
+                                if item.value == selection {
+                                    Spacer()
+                                    Image(systemName: "checkmark")
+                                        .foregroundStyle(Color.accentColor)
+                                }
+                            }
+                        }
+                    }
+                    .searchable(text: $query)
+                    .navigationTitle(NSLocalizedString(title, comment: ""))
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button(NSLocalizedString("done", comment: "Done button")) { isPresenting = false }
+                        }
+                    }
+                }
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
+            }
+        }
+    }
+
+    private var filtered: [Item] {
+        let items = options.map { Item(value: $0) }
+        return query.isEmpty ? items : items.filter { $0.value.localizedCaseInsensitiveContains(query) }
+    }
+
+    private struct Item: Identifiable {
+        var id: String { value }
+        let value: String
     }
 }
