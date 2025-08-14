@@ -329,6 +329,9 @@
         }
       }
     },
+    "Done" : {
+
+    },
     "fight_nightlord" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -372,6 +375,7 @@
     },
     "game_type" : {
       "comment" : "Game Type Selection",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -413,6 +417,7 @@
     },
     "hero_name" : {
       "comment" : "Hero Selection",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -577,6 +582,7 @@
     },
     "nightlord_name" : {
       "comment" : "Nightlord Selection",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
