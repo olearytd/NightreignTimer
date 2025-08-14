@@ -13,11 +13,34 @@ env:
 
 jobs:
   build-and-test:
-    runs-on: macos-15
+    runs-on: macos-14
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Select Xcode 16
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '16.*'
+
+      - name: Ensure iOS simulator runtime is installed
+        shell: bash
+        run: |
+          set -euo pipefail
+          # If no available iOS runtimes are present, download the iOS platform.
+          if ! xcrun simctl list --json runtimes | /usr/bin/python3 - <<'PY'
+          import json, sys
+          data = json.load(sys.stdin)
+          ios = [rt for rt in data.get("runtimes", []) if rt.get("platform") == "iOS" and rt.get("isAvailable")]
+          sys.exit(0 if ios else 1)
+          PY
+          then
+            echo "No iOS simulator runtime detected. Downloading iOS platform..."
+            xcodebuild -downloadPlatform iOS
+          else
+            echo "iOS simulator runtime detected."
+          fi
 
       - name: Select latest available iPhone simulator
         id: set_simulator
