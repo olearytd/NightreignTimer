@@ -1,1 +1,9 @@
+# Xcode user state
+**/xcuserdata/
+**/*.xcuserstate
+
+# Usual Xcode noise (optional but recommended)
+DerivedData/
+build/
+*.xcworkspace/xcuserdata/
 .DS_Store
