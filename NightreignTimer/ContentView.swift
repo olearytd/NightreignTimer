@@ -15,11 +15,15 @@ let dayPhases = [
 //    GameTimerPhase(name: NSLocalizedString("phase_explore", comment: "Explore phase"), duration: 2),   // test
 //    GameTimerPhase(name: NSLocalizedString("phase_first_circle", comment: "First Circle Closing phase"), duration: 2),   // test
 //    GameTimerPhase(name: NSLocalizedString("phase_explore", comment: "Explore phase"), duration: 2),   // test
-//    GameTimerPhase(name: NSLocalizedString("phase_last_circle", comment: "Last Circle Closing phase"), duration: 32)   // test
+//    GameTimerPhase(name: NSLocalizedString("phase_last_circle", comment: "Last Circle Closing phase"), duration: 2)   // test
 ]
 
 struct ContentView: View {
     @AppStorage("batterySaverEnabled") private var batterySaverEnabled: Bool = false
+    @AppStorage("didMigrateV2DidWin") private var didMigrateV2DidWin: Bool = false
+    @AppStorage("selectedGameType")   private var storedGameType: String   = "Solo"
+    @AppStorage("selectedCharacter")  private var storedCharacter: String  = "Wylder"
+    @AppStorage("selectedNightLord")  private var storedNightLord: String  = "Tricephalos"
     @State private var timer: Timer? = nil
     @State private var timeRemaining: TimeInterval = dayPhases.first?.duration ?? 0
     @State private var isRunning = false
@@ -71,6 +75,7 @@ struct ContentView: View {
     @State private var liveActivity: Activity<NightreignWidgetAttributes>?
 
     @State private var showingSettings = false
+    @State private var showingRecords = false
 
     var body: some View {
         NavigationStack {
@@ -240,7 +245,18 @@ struct ContentView: View {
                                 let stats = gameStats
                                 stats.winCount += 1
                                 stats.totalAttempts += 1
-                                stats.dateTime = Date()
+                                stats.didWin = true
+                                // Do NOT set dateTime on the aggregate so it stays out of Records
+
+                                // Create a completed-run record for RecordsView
+                                let record = GameStats(context: viewContext)
+                                record.id = UUID()
+                                record.gameType = storedGameType
+                                record.character = storedCharacter
+                                record.nightLord = storedNightLord
+                                record.didWin = true
+                                record.dateTime = Date()
+
                                 try? viewContext.save()
                                 hasAnswered = true
                             }
@@ -252,7 +268,18 @@ struct ContentView: View {
                                 guard !hasAnswered else { return }
                                 let stats = gameStats
                                 stats.totalAttempts += 1
-                                stats.dateTime = Date()
+                                stats.didWin = false
+                                // Do NOT set dateTime on the aggregate so it stays out of Records
+
+                                // Create a completed-run record for RecordsView
+                                let record = GameStats(context: viewContext)
+                                record.id = UUID()
+                                record.gameType = storedGameType
+                                record.character = storedCharacter
+                                record.nightLord = storedNightLord
+                                record.didWin = false
+                                record.dateTime = Date()
+
                                 try? viewContext.save()
                                 hasAnswered = true
                             }
@@ -277,17 +304,6 @@ struct ContentView: View {
                                 .foregroundColor(.white)
                         }
 
-                        Button(NSLocalizedString("reset_stats", comment: "Reset Stats")) {
-                            let stats = gameStats
-                            stats.winCount = 0
-                            stats.totalAttempts = 0
-                            try? viewContext.save()
-                        }
-                        .buttonStyle(.bordered)
-                        .controlSize(.large)
-                        .foregroundColor(.white)
-                        .padding(.top)
-
                         Button(NSLocalizedString("restart", comment: "Restart")) {
                             restartGame()
                         }
@@ -304,6 +320,18 @@ struct ContentView: View {
                 stopTimer()
                 timeRemaining = dayPhases[currentPhaseIndex].duration
                 UIApplication.shared.isIdleTimerDisabled = !batterySaverEnabled
+                if !didMigrateV2DidWin {
+                    // Delete all existing GameStats to avoid mislabeling legacy entries as losses
+                    stats.forEach { viewContext.delete($0) }
+                    do {
+                        try viewContext.save()
+                    } catch {
+                        print("Migration delete failed:", error)
+                    }
+                    // Ensure a fresh aggregate is created on demand
+                    _ = gameStats
+                    didMigrateV2DidWin = true
+                }
             }
             .onChange(of: scenePhase) {
                 switch scenePhase {
@@ -326,6 +354,14 @@ struct ContentView: View {
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
+                            showingRecords = true
+                        } label: {
+                            Image(systemName: "book")
+                        }
+                        .accessibilityLabel(Text(NSLocalizedString("records", comment: "Records")))
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
                             showingSettings = true
                         } label: {
                             Image(systemName: "gearshape")
@@ -335,6 +371,10 @@ struct ContentView: View {
         } // end NavigationStack
         .sheet(isPresented: $showingSettings) {
             SettingsView()
+                .environment(\.managedObjectContext, viewContext)
+        }
+        .sheet(isPresented: $showingRecords) {
+            RecordsView()
                 .environment(\.managedObjectContext, viewContext)
         }
     }
