@@ -3,6 +3,7 @@
     <entity name="GameStats" representedClassName="GameStats" syncable="YES" codeGenerationType="class">
         <attribute name="character" optional="YES" attributeType="String"/>
         <attribute name="dateTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="didWin" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="gameType" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="nightLord" optional="YES" attributeType="String"/>

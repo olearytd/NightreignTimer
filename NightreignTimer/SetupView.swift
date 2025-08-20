@@ -6,6 +6,8 @@ struct SetupView: View {
     @State private var selectedCharacter = "Wylder"
     @State private var selectedNightLord = "Tricephalos"
     @State private var navigateToMain = false
+    @State private var showingSettings = false
+    @State private var showingRecords = false
 
     let gameTypes = ["Solo", "Duos", "Trios"]
     let characters = ["Wylder", "Ironeye", "Duchess", "Guardian", "Raider", "Recluse", "Revenant", "Executor"]
@@ -89,6 +91,27 @@ struct SetupView: View {
                 }
                 .padding(.horizontal)
             }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button { showingRecords = true } label: {
+                        Image(systemName: "book")
+                    }
+                    .accessibilityLabel(Text(NSLocalizedString("records", comment: "Records")))
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button { showingSettings = true } label: {
+                        Image(systemName: "gearshape")
+                    }
+                }
+            }
+        .sheet(isPresented: $showingSettings) {
+            SettingsView()
+                .environment(\.managedObjectContext, viewContext)
+        }
+        .sheet(isPresented: $showingRecords) {
+            RecordsView()
+                .environment(\.managedObjectContext, viewContext)
+        }
             .navigationDestination(isPresented: $navigateToMain) {
                 ContentView()
                     .environment(\.managedObjectContext, viewContext)
@@ -97,15 +120,10 @@ struct SetupView: View {
     }
 
     private func saveSetup() {
-        let stats = GameStats(context: viewContext)
-        stats.id = UUID()
-        stats.gameType = selectedGameType
-        stats.character = selectedCharacter
-        stats.nightLord = selectedNightLord
-        stats.dateTime = Date()
-        stats.winCount = 0
-        stats.totalAttempts = 0
-        try? viewContext.save()
+        let defaults = UserDefaults.standard
+        defaults.set(selectedGameType,  forKey: "selectedGameType")
+        defaults.set(selectedCharacter,  forKey: "selectedCharacter")
+        defaults.set(selectedNightLord, forKey: "selectedNightLord")
     }
 }
 
