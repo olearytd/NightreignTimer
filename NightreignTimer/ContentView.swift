@@ -31,6 +31,7 @@ struct ContentView: View {
     @State private var day = 1
     @State private var wasPaused = false
     @State private var hasAnswered = false
+    @State private var selectedOutcome: Bool? = nil // true = win, false = loss
     @State private var backgroundDate: Date? = nil
     @State private var showPhaseWarning = false
     @State private var tooltipText: String = NSLocalizedString("start_timer_tooltip_day_1", comment: "Tooltip for starting timer on Day 1")
@@ -76,6 +77,240 @@ struct ContentView: View {
 
     @State private var showingSettings = false
     @State private var showingRecords = false
+    @State private var showManualLossAlert = false
+
+    // MARK: - Lightweight subviews to help type-checker
+    @ViewBuilder
+    private func headerView() -> some View {
+        VStack(spacing: 4) {
+            Text(NSLocalizedString("title_er_nightreign", comment: "Title: ER Nightreign"))
+                .font(.largeTitle)
+                .fontWeight(.semibold)
+                .foregroundStyle(Color("EldenBlue"))
+                .shadow(color: .black.opacity(0.9), radius: 4, x: 0, y: 4)
+                .overlay(
+                    Text(NSLocalizedString("title_er_nightreign", comment: "Title: ER Nightreign"))
+                        .font(.largeTitle)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white.opacity(0.2))
+                        .offset(x: 1, y: 1)
+                )
+            Text(NSLocalizedString("title_timer", comment: "Title: Timer"))
+                .font(.largeTitle)
+                .fontWeight(.medium)
+                .foregroundStyle(Color("EldenBlue"))
+                .shadow(color: .black.opacity(0.9), radius: 4, x: 0, y: 4)
+                .overlay(
+                    Text(NSLocalizedString("title_timer", comment: "Title: Timer"))
+                        .font(.largeTitle)
+                        .fontWeight(.medium)
+                        .foregroundColor(.white.opacity(0.2))
+                        .offset(x: 1, y: 1)
+                )
+        }
+        .multilineTextAlignment(.center)
+        .padding(.top, 40)
+    }
+
+    @ViewBuilder
+    private func daySectionView() -> some View {
+        VStack(spacing: 30) {
+            Text(String(format: NSLocalizedString("day_label", comment: "Day label with phase"), dayName(), currentPhaseName()))
+                .font(.largeTitle)
+                .foregroundColor(.white)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+                .padding(.top)
+
+            ProgressView(value: progressForCurrentPhase())
+                .progressViewStyle(LinearProgressViewStyle(tint: showPhaseWarning ? .yellow : .white))
+                .padding(.horizontal)
+                .animation(.easeInOut(duration: 0.3), value: timeRemaining)
+
+            Text(timeString(from: timeRemaining))
+                .font(.system(size: 48, weight: .bold, design: .monospaced))
+                .foregroundColor(.white)
+
+            if showPhaseWarning {
+                Text(
+                    currentPhaseName().contains("Circle") ? NSLocalizedString("warning_circle", comment: "Move to the Safe Zone warning") :
+                    (currentPhaseName().contains("Explore") ? NSLocalizedString("warning_explore", comment: "The Night Rain Approaches warning") :
+                        NSLocalizedString("warning_default", comment: "Phase ending soon warning"))
+                )
+                .font(.title2)
+                .foregroundColor(.yellow)
+                .transition(.opacity)
+            }
+
+            if !isRunning && timeRemaining == 0 && currentPhaseIndex == dayPhases.count - 1 && day < 3 {
+                Button(day + 1 == 3 ?
+                       NSLocalizedString("fight_nightlord", comment: "Fight the Nightlord button") :
+                       String(format: NSLocalizedString("start_day_X", comment: "Start Day X button"), dayName(for: day + 1))
+                ) {
+                    day += 1
+                    currentPhaseIndex = 0
+                    timeRemaining = dayPhases[0].duration
+                    wasPaused = false
+                    tooltipText = String(format: NSLocalizedString("start_timer_tooltip_day_X", comment: "Tooltip for starting timer on Day X"), dayName())
+                    if day == 2 {
+                        startTimer()
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                .font(.title2)
+                .scaleEffect(1.05)
+                .animation(.easeInOut(duration: 0.2), value: isRunning)
+            } else {
+                HStack(spacing: 20) {
+                    Button(buttonLabel()) {
+                        if isRunning {
+                            stopTimer()
+                            wasPaused = true
+                        } else {
+                            startTimer()
+                            wasPaused = false
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                    .font(.title2)
+                    .scaleEffect(isRunning ? 1.0 : 1.05)
+                    .animation(.easeInOut(duration: 0.2), value: isRunning)
+                }
+            }
+
+            HStack(spacing: 12) {
+                Button(NSLocalizedString("reset", comment: "Reset button")) {
+                    tooltipText = NSLocalizedString("start_timer_tooltip_day_1", comment: "Tooltip for starting timer on Day 1")
+                    Task {
+                        await liveActivity?.end(
+                            ActivityContent(
+                                state: NightreignWidgetAttributes.ContentState(
+                                    timeRemaining: 0,
+                                    phaseLabel: NSLocalizedString("reset_phase_label", comment: "Reset phase label")
+                                ),
+                                staleDate: nil
+                            ),
+                            dismissalPolicy: .immediate
+                        )
+                    }
+                    if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                       let window = scene.windows.first {
+                        window.rootViewController = UIHostingController(
+                            rootView: SetupView().environment(\.managedObjectContext, viewContext)
+                        )
+                        window.makeKeyAndVisible()
+                    }
+                }
+                .controlSize(.regular)
+                .font(.title3)
+                .foregroundColor(.white)
+                .buttonStyle(.bordered)
+                .scaleEffect(isRunning ? 1.0 : 1.02)
+
+                Button(NSLocalizedString("record_loss", comment: "Record a loss")) {
+                    recordManualLoss()
+                    showManualLossAlert = true
+                }
+                .buttonStyle(.bordered)
+                .tint(.red)
+                .controlSize(.regular)
+                .font(.title3)
+                .accessibilityLabel(Text(NSLocalizedString("record_loss", comment: "Record a loss")))
+                .alert(NSLocalizedString("loss_recorded_title", comment: "Loss recorded title"), isPresented: $showManualLossAlert) {
+                    Button(NSLocalizedString("ok", comment: "OK"), role: .cancel) {}
+                } message: {
+                    Text(NSLocalizedString("loss_recorded_message", comment: "Loss recorded message"))
+                }
+            }
+            .padding(.top, 8)
+
+            Text(tooltipText)
+                .font(.body)
+                .foregroundColor(.white.opacity(0.7))
+                .multilineTextAlignment(.center)
+                .padding(.top, 20)
+                .padding(.horizontal)
+        }
+    }
+
+    @ViewBuilder
+    private func resultsSectionView() -> some View {
+        VStack(spacing: 20) {
+            Text(NSLocalizedString("nightlord_battle", comment: "Nightlord Battle title"))
+                .font(.largeTitle)
+                .bold()
+                .foregroundColor(.white)
+            Text(NSLocalizedString("did_you_win", comment: "Did you win?"))
+                .font(.title2)
+                .foregroundColor(.white)
+
+            HStack(spacing: 20) {
+                Button(NSLocalizedString("yes", comment: "Yes")) {
+                    guard !hasAnswered else { return }
+                    let stats = gameStats
+                    stats.winCount += 1
+                    stats.totalAttempts += 1
+                    stats.didWin = true
+
+                    let record = GameStats(context: viewContext)
+                    record.id = UUID()
+                    record.gameType = storedGameType
+                    record.character = storedCharacter
+                    record.nightLord = storedNightLord
+                    record.didWin = true
+                    record.dateTime = Date()
+
+                    try? viewContext.save()
+                    selectedOutcome = true
+                    hasAnswered = true
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(selectedOutcome == true ? .green : .gray)
+                .controlSize(.large)
+                .font(.title2)
+
+                Button(NSLocalizedString("no", comment: "No")) {
+                    guard !hasAnswered else { return }
+                    let stats = gameStats
+                    stats.totalAttempts += 1
+                    stats.didWin = false
+
+                    let record = GameStats(context: viewContext)
+                    record.id = UUID()
+                    record.gameType = storedGameType
+                    record.character = storedCharacter
+                    record.nightLord = storedNightLord
+                    record.didWin = false
+                    record.dateTime = Date()
+
+                    try? viewContext.save()
+                    selectedOutcome = false
+                    hasAnswered = true
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(selectedOutcome == false ? .red : .gray)
+                .controlSize(.large)
+                .font(.title2)
+            }
+
+            if hasAnswered {
+                Text(NSLocalizedString("session_saved", comment: "Confirmation after saving a session"))
+                    .font(.title3)
+                    .foregroundColor(.green)
+                    .padding(.top)
+                    .transition(.opacity)
+            }
+
+            Button(NSLocalizedString("restart", comment: "Restart")) {
+                restartGame()
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            .padding(.top)
+        }
+    }
 
     var body: some View {
         NavigationStack {
@@ -90,227 +325,14 @@ struct ContentView: View {
             )
             .ignoresSafeArea()
             VStack {
-                VStack(spacing: 4) {
-                    Text(NSLocalizedString("title_er_nightreign", comment: "Title: ER Nightreign"))
-                        .font(.largeTitle)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(Color("EldenBlue"))
-                        .shadow(color: .black.opacity(0.9), radius: 4, x: 0, y: 4)
-                        .overlay(
-                            Text(NSLocalizedString("title_er_nightreign", comment: "Title: ER Nightreign"))
-                                .font(.largeTitle)
-                                .fontWeight(.semibold)
-                                .foregroundColor(.white.opacity(0.2))
-                                .offset(x: 1, y: 1)
-                        )
-                    Text(NSLocalizedString("title_timer", comment: "Title: Timer"))
-                        .font(.largeTitle)
-                        .fontWeight(.medium)
-                        .foregroundStyle(Color("EldenBlue"))
-                        .shadow(color: .black.opacity(0.9), radius: 4, x: 0, y: 4)
-                        .overlay(
-                            Text(NSLocalizedString("title_timer", comment: "Title: Timer"))
-                                .font(.largeTitle)
-                                .fontWeight(.medium)
-                                .foregroundColor(.white.opacity(0.2))
-                                .offset(x: 1, y: 1)
-                        )
-                }
-                .multilineTextAlignment(.center)
-                .padding(.top, 40)
+                headerView()
                 Spacer()
                 if day < 3 {
-                    VStack(spacing: 30) {
-                        Text(String(format: NSLocalizedString("day_label", comment: "Day label with phase"), dayName(), currentPhaseName()))
-                            .font(.largeTitle)
-                            .foregroundColor(.white)
-                            .multilineTextAlignment(.center)
-                            .frame(maxWidth: .infinity)
-                            .padding(.top)
-                        
-                        ProgressView(value: progressForCurrentPhase())
-                            .progressViewStyle(LinearProgressViewStyle(tint: showPhaseWarning ? .yellow : .white))
-                            .padding(.horizontal)
-                            .animation(.easeInOut(duration: 0.3), value: timeRemaining)
-                        
-                        Text(timeString(from: timeRemaining))
-                            .font(.system(size: 48, weight: .bold, design: .monospaced))
-                            .foregroundColor(.white)
-                        
-                        if showPhaseWarning {
-                            Text(
-                                currentPhaseName().contains("Circle") ? NSLocalizedString("warning_circle", comment: "Move to the Safe Zone warning") :
-                                currentPhaseName().contains("Explore") ? NSLocalizedString("warning_explore", comment: "The Night Rain Approaches warning") :
-                                NSLocalizedString("warning_default", comment: "Phase ending soon warning")
-                            )
-                                .font(.title2)
-                                .foregroundColor(.yellow)
-                                .transition(.opacity)
-                        }
-
-
-                        if !isRunning && timeRemaining == 0 && currentPhaseIndex == dayPhases.count - 1 && day < 3 {
-                            Button(day + 1 == 3 ?
-                                   NSLocalizedString("fight_nightlord", comment: "Fight the Nightlord button") :
-                                   String(format: NSLocalizedString("start_day_X", comment: "Start Day X button"), dayName(for: day + 1))
-                            ) {
-                                day += 1
-                                currentPhaseIndex = 0
-                                timeRemaining = dayPhases[0].duration
-                                wasPaused = false
-                                tooltipText = String(format: NSLocalizedString("start_timer_tooltip_day_X", comment: "Tooltip for starting timer on Day X"), dayName())
-                                if day == 2 {
-                                    startTimer()
-                                }
-                            }
-                            .buttonStyle(.borderedProminent)
-                            .controlSize(.large)
-                            .font(.title2)
-                            .scaleEffect(1.05)
-                            .animation(.easeInOut(duration: 0.2), value: isRunning)
-                        } else {
-                            HStack(spacing: 20) {
-                                Button(buttonLabel()) {
-                                    if isRunning {
-                                        stopTimer()
-                                        wasPaused = true
-                                    } else {
-                                        startTimer()
-                                        wasPaused = false
-                                    }
-                                }
-                                .buttonStyle(.borderedProminent)
-                                .controlSize(.large)
-                                .font(.title2)
-                                .scaleEffect(isRunning ? 1.0 : 1.05)
-                                .animation(.easeInOut(duration: 0.2), value: isRunning)
-                            }
-                        }
-
-                        Button(NSLocalizedString("reset", comment: "Reset button")) {
-                            // Reset tooltip text as before
-                            tooltipText = NSLocalizedString("start_timer_tooltip_day_1", comment: "Tooltip for starting timer on Day 1")
-                            // End the live activity if running (same as in restartGame)
-                            Task {
-                                await liveActivity?.end(
-                                    ActivityContent(
-                                        state: NightreignWidgetAttributes.ContentState(
-                                            timeRemaining: 0,
-                                            phaseLabel: NSLocalizedString("reset_phase_label", comment: "Reset phase label")
-                                        ),
-                                        staleDate: nil
-                                    ),
-                                    dismissalPolicy: .immediate
-                                )
-                            }
-                            // Navigate back to SetupView by replacing the root view
-                            if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                               let window = scene.windows.first {
-                                window.rootViewController = UIHostingController(
-                                    rootView: SetupView().environment(\.managedObjectContext, viewContext)
-                                )
-                                window.makeKeyAndVisible()
-                            }
-                        }
-                        .padding(.top)
-                        .controlSize(.large)
-                        .font(.title2)
-                        .foregroundColor(.white)
-                        .buttonStyle(.bordered)
-                        .scaleEffect(isRunning ? 1.0 : 1.05)
-                        .animation(.easeInOut(duration: 0.2), value: isRunning)
-                    
-                    Text(tooltipText)
-                        .font(.body)
-                        .foregroundColor(.white.opacity(0.7))
-                        .multilineTextAlignment(.center)
-                        .padding(.top, 10)
-                        .padding(.horizontal)
-                    }
+                    daySectionView()
                 }
 
                 if day == 3 && !isRunning && currentPhaseIndex == 0 && timeRemaining == dayPhases[0].duration {
-                    VStack(spacing: 20) {
-                        Text(NSLocalizedString("nightlord_battle", comment: "Nightlord Battle title"))
-                            .font(.largeTitle)
-                            .bold()
-                            .foregroundColor(.white)
-                        Text(NSLocalizedString("did_you_win", comment: "Did you win?"))
-                            .font(.title2)
-                            .foregroundColor(.white)
-
-                        HStack(spacing: 20) {
-                            Button(NSLocalizedString("yes", comment: "Yes")) {
-                                guard !hasAnswered else { return }
-                                let stats = gameStats
-                                stats.winCount += 1
-                                stats.totalAttempts += 1
-                                stats.didWin = true
-                                // Do NOT set dateTime on the aggregate so it stays out of Records
-
-                                // Create a completed-run record for RecordsView
-                                let record = GameStats(context: viewContext)
-                                record.id = UUID()
-                                record.gameType = storedGameType
-                                record.character = storedCharacter
-                                record.nightLord = storedNightLord
-                                record.didWin = true
-                                record.dateTime = Date()
-
-                                try? viewContext.save()
-                                hasAnswered = true
-                            }
-                            .buttonStyle(.borderedProminent)
-                            .controlSize(.large)
-                            .font(.title2)
-
-                            Button(NSLocalizedString("no", comment: "No")) {
-                                guard !hasAnswered else { return }
-                                let stats = gameStats
-                                stats.totalAttempts += 1
-                                stats.didWin = false
-                                // Do NOT set dateTime on the aggregate so it stays out of Records
-
-                                // Create a completed-run record for RecordsView
-                                let record = GameStats(context: viewContext)
-                                record.id = UUID()
-                                record.gameType = storedGameType
-                                record.character = storedCharacter
-                                record.nightLord = storedNightLord
-                                record.didWin = false
-                                record.dateTime = Date()
-
-                                try? viewContext.save()
-                                hasAnswered = true
-                            }
-                            .buttonStyle(.bordered)
-                            .controlSize(.large)
-                            .font(.title2)
-                        }
-
-                        Text(String(format: NSLocalizedString("wins", comment: "Wins label"), "\(gameStats.winCount)"))
-                            .font(.title3)
-                            .padding(.top)
-                            .foregroundColor(.white)
-
-                        Text(String(format: NSLocalizedString("attempts", comment: "Attempts label"), "\(gameStats.totalAttempts)"))
-                            .font(.title3)
-                            .foregroundColor(.white)
-
-                        if gameStats.totalAttempts > 0 {
-                            let winRate = Double(gameStats.winCount) / Double(gameStats.totalAttempts) * 100
-                            Text(String(format: NSLocalizedString("win_rate", comment: "Win Rate label"), winRate))
-                                .font(.title3)
-                                .foregroundColor(.white)
-                        }
-
-                        Button(NSLocalizedString("restart", comment: "Restart")) {
-                            restartGame()
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .controlSize(.large)
-                        .padding(.top)
-                    }
+                    resultsSectionView()
                 }
                 Spacer()
             }
@@ -543,6 +565,51 @@ struct ContentView: View {
             )
             window.makeKeyAndVisible()
         }
+    }
+
+    func recordManualLoss() {
+        // Stop any running timer and end live activity
+        stopTimer()
+        Task {
+            await liveActivity?.end(
+                ActivityContent(
+                    state: NightreignWidgetAttributes.ContentState(
+                        timeRemaining: 0,
+                        phaseLabel: NSLocalizedString("done", comment: "Done phase label")
+                    ),
+                    staleDate: nil
+                ),
+                dismissalPolicy: .immediate
+            )
+            liveActivity = nil
+        }
+
+        // Update aggregate stats
+        let stats = gameStats
+        stats.totalAttempts += 1
+        stats.didWin = false
+
+        // Create a per-run record for RecordsView
+        let record = GameStats(context: viewContext)
+        record.id = UUID()
+        record.gameType = storedGameType
+        record.character = storedCharacter
+        record.nightLord = storedNightLord
+        record.didWin = false
+        record.dateTime = Date()
+
+        do {
+            try viewContext.save()
+        } catch {
+            print("Failed to save manual loss:", error)
+        }
+
+        // Reset UI state so user can start a fresh run
+        day = 1
+        currentPhaseIndex = 0
+        timeRemaining = dayPhases[0].duration
+        wasPaused = false
+        tooltipText = NSLocalizedString("start_timer_tooltip_day_1", comment: "Tooltip for starting timer on Day 1")
     }
 
     func triggerHaptic() {
