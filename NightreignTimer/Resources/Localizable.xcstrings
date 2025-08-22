@@ -287,6 +287,253 @@
         }
       }
     },
+    "ck_event_account_change" : {
+      "comment" : "CloudKit event: Account Change",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account Changed"
+          }
+        },
+        "es-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuenta cambiada"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compte modifié"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウントが変更されました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "계정 변경됨"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "帳戶已更改"
+          }
+        }
+      }
+    },
+    "ck_event_error" : {
+      "comment" : "CloudKit error event",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        },
+        "es-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erreur"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エラー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오류"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "錯誤"
+          }
+        }
+      }
+    },
+    "ck_event_export" : {
+      "comment" : "CloudKit export event",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exported"
+          }
+        },
+        "es-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exporté"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エクスポートされました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "내보냄"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已匯出"
+          }
+        }
+      }
+    },
+    "ck_event_import" : {
+      "comment" : "CloudKit import event",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imported"
+          }
+        },
+        "es-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importé"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "インポートされました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "가져옴"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已匯入"
+          }
+        }
+      }
+    },
+    "ck_event_other" : {
+      "comment" : "CloudKit other event",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Other"
+          }
+        },
+        "es-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otro"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autre"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기타"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "其他"
+          }
+        }
+      }
+    },
+    "ck_event_setup" : {
+      "comment" : "CloudKit setup event",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Setup"
+          }
+        },
+        "es-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuración"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuration"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セットアップ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설정"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定"
+          }
+        }
+      }
+    },
     "close" : {
       "comment" : "Close",
       "localizations" : {
@@ -694,6 +941,47 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "iCloud 同步"
+          }
+        }
+      }
+    },
+    "last_sync_format" : {
+      "comment" : "Last Sync",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last sync: %@"
+          }
+        },
+        "es-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Última sincronización: %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dernière synchro : %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最終同期：%@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "마지막 동기화: %@"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上次同步：%@"
           }
         }
       }
@@ -2089,6 +2377,88 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "同步已啟用"
+          }
+        }
+      }
+    },
+    "sync_now" : {
+      "comment" : "Sync Now label",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sync Now"
+          }
+        },
+        "es-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sincronizar ahora"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchroniser maintenant"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今すぐ同期"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금 동기화"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "立即同步"
+          }
+        }
+      }
+    },
+    "syncing" : {
+      "comment" : "Syncing label",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Syncing…"
+          }
+        },
+        "es-US" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sincronizando…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchronisation…"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同期中…"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "동기화 중…"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在同步…"
           }
         }
       }
