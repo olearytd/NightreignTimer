@@ -10,7 +10,7 @@ struct SetupView: View {
     @State private var showingRecords = false
 
     let gameTypes = ["Solo", "Duos", "Trios"]
-    let characters = ["Wylder", "Ironeye", "Duchess", "Guardian", "Raider", "Recluse", "Revenant", "Executor"]
+    let characters = ["Wylder", "Ironeye", "Duchess", "Guardian", "Raider", "Recluse", "Revenant", "Executor", "Scholar", "Undertaker"]
     let nightLords = [
         "Tricephalos",
         "Gaping Jaw",
