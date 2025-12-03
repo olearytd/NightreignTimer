@@ -10,7 +10,7 @@ struct SetupView: View {
     @State private var showingRecords = false
 
     let gameTypes = ["Solo", "Duos", "Trios"]
-    let characters = ["Wylder", "Ironeye", "Duchess", "Guardian", "Raider", "Recluse", "Revenant", "Executor"]
+    let characters = ["Wylder", "Ironeye", "Duchess", "Guardian", "Raider", "Recluse", "Revenant", "Executor", "Scholar (DLC)", "Undertaker (DLC)"]
     let nightLords = [
         "Tricephalos",
         "Gaping Jaw",
@@ -20,6 +20,8 @@ struct SetupView: View {
         "Darkdrift Knight",
         "Fissure in the Fog",
         "Night Aspect",
+        "Balancers (DLC)",
+        "The Dreglord (DLC)",
         "Tricephalos (Everdark)",
         "Gaping Jaw (Everdark)",
         "Sentient Pest (Everdark)",
